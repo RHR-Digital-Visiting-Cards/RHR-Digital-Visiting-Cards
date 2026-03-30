@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Business Card</title>
+    <title>Digital Business Card - RHR</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -11,10 +11,8 @@
         body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
         .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 2.5rem; }
         .profile-img { width: 120px; height: 120px; object-fit: cover; border: 4px solid white; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
-        .action-btn { transition: all 0.2s ease; }
-        .action-btn:active { transform: scale(0.95); }
-        .icon-box { min-width: 45px; min-height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 1rem; background: #f8fafc; color: #64748b; transition: all 0.3s; }
-        .icon-box:hover { background: #eff6ff; color: #2563eb; }
+        .icon-box { min-width: 48px; min-height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 1rem; background: #f8fafc; color: #64748b; transition: all 0.3s; border: 1px solid #f1f5f9; }
+        .icon-box:hover { background: #eff6ff; color: #2563eb; transform: translateY(-2px); }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
@@ -23,22 +21,22 @@
         <i data-lucide="settings" class="w-5 h-5"></i>
     </button>
 
-    <div id="main-loader" class="text-slate-400 font-medium italic">Loading your professional profile...</div>
+    <div id="main-loader" class="text-slate-400 font-medium animate-pulse">Fetching Profile Data...</div>
     
     <div id="card-container" class="max-w-sm w-full glass-card shadow-2xl overflow-hidden hidden">
-        <div class="h-32 bg-gradient-to-r from-slate-800 to-slate-900"></div>
+        <div class="h-32 bg-slate-900"></div>
         
         <div class="px-6 pb-8 -mt-16 text-center">
-            <img id="view-photo" src="" alt="Profile" class="profile-img rounded-full mx-auto mb-4 bg-slate-200">
-            <h1 id="view-name" class="text-2xl font-bold text-slate-800 tracking-tight">Loading...</h1>
-            <p id="view-title" class="text-blue-600 font-semibold text-sm mb-1 uppercase tracking-wider italic">Designation</p>
-            <p id="view-company" class="text-slate-400 text-xs font-medium mb-6 italic">Company Name</p>
+            <img id="view-photo" src="" alt="Profile" class="profile-img rounded-full mx-auto mb-4 bg-slate-100">
+            <h1 id="view-name" class="text-2xl font-bold text-slate-800 tracking-tight"></h1>
+            <p id="view-title" class="text-blue-600 font-bold text-xs mb-1 uppercase tracking-widest italic"></p>
+            <p id="view-company" class="text-slate-400 text-[10px] font-bold mb-6 uppercase"></p>
 
-            <button onclick="saveVCF()" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold text-sm mb-8 flex items-center justify-center gap-2 action-btn shadow-lg">
+            <button onclick="saveVCF()" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold text-sm mb-8 flex items-center justify-center gap-2 shadow-lg hover:bg-slate-800 transition-all">
                 <i data-lucide="user-plus" class="w-4 h-4"></i> Save Contact
             </button>
 
-            <div class="flex justify-center gap-3 mb-8">
+            <div class="flex justify-center gap-2 mb-8">
                 <a id="link-mobile" href="#" class="icon-box"><i data-lucide="phone" class="w-5 h-5"></i></a>
                 <a id="link-email" href="#" class="icon-box"><i data-lucide="mail" class="w-5 h-5"></i></a>
                 <a id="link-website" href="#" target="_blank" class="icon-box"><i data-lucide="globe" class="w-5 h-5"></i></a>
@@ -55,9 +53,9 @@
                     </div>
                 </div>
                 <div class="flex gap-4 items-start p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
-                    <i data-lucide="sparkles" class="w-5 h-5 text-slate-400 mt-1"></i>
+                    <i data-lucide="briefcase" class="w-5 h-5 text-slate-400 mt-1"></i>
                     <div>
-                        <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Expertise & Services</p>
+                        <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Services</p>
                         <p id="view-services" class="text-sm text-slate-700 font-semibold"></p>
                     </div>
                 </div>
@@ -67,23 +65,23 @@
 
     <div id="pin-modal" class="fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[100] hidden items-center justify-center p-6">
         <div class="bg-white rounded-[2rem] p-8 max-w-xs w-full text-center shadow-2xl">
-            <h3 class="text-xl font-bold mb-6 text-slate-800">Verify Admin</h3>
+            <h3 class="text-xl font-bold mb-6 text-slate-800">Admin Login</h3>
             <input type="password" id="pin-input" class="w-full text-center text-3xl font-bold border-b-2 border-slate-100 focus:border-blue-600 focus:outline-none mb-8" maxlength="4" placeholder="••••">
             <div class="flex gap-3">
-                <button onclick="closeModal('pin-modal')" class="flex-1 py-3 text-slate-400 font-bold text-xs">Back</button>
-                <button onclick="checkPin()" class="flex-1 py-3 bg-blue-600 text-white rounded-xl font-bold text-xs uppercase">Verify</button>
+                <button onclick="closeModal('pin-modal')" class="flex-1 py-3 text-slate-400 font-bold text-xs uppercase">Cancel</button>
+                <button onclick="checkPin()" class="flex-1 py-3 bg-blue-600 text-white rounded-xl font-bold text-xs uppercase">Login</button>
             </div>
         </div>
     </div>
 
     <div id="edit-modal" class="fixed inset-0 bg-white z-[200] hidden overflow-y-auto p-6">
-        <div class="max-w-md mx-auto pb-20 text-slate-800">
+        <div class="max-w-md mx-auto pb-20">
             <div class="flex justify-between items-center mb-10 sticky top-0 bg-white py-4 border-b">
-                <h2 class="text-xl font-bold">Edit Profile Data</h2>
+                <h2 class="text-xl font-bold">Update Profile</h2>
                 <button onclick="closeModal('edit-modal')" class="p-2 bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div id="edit-form-fields" class="space-y-5"></div>
-            <button onclick="saveData()" id="save-btn" class="w-full mt-10 py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase shadow-xl">Sync to Cloud</button>
+            <button onclick="saveData()" id="save-btn" class="w-full mt-10 py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase tracking-widest shadow-xl">Update Now</button>
         </div>
     </div>
 
@@ -94,14 +92,13 @@
         let userData = {};
 
         async function init() {
-            lucide.createIcons();
             try {
                 const res = await fetch(`${SCRIPT_URL}?id=${PROFILE_ID}`);
                 const result = await res.json();
                 if (result.success) { 
                     userData = result.data; 
                     renderView(); 
-                } else { document.getElementById('main-loader').innerText = "Card Not Found!"; }
+                } else { document.getElementById('main-loader').innerText = "Card ID Not Found!"; }
             } catch (e) { console.error(e); }
         }
 
@@ -122,18 +119,8 @@
             document.getElementById('main-loader').classList.add('hidden');
             document.getElementById('card-container').classList.remove('hidden');
             
-            // রি-রেন্ডার আইকন (ডেটা লোড হওয়ার পর)
-            setTimeout(() => { lucide.createIcons(); }, 100);
-        }
-
-        function saveVCF() {
-            const vcfData = `BEGIN:VCARD\nVERSION:3.0\nFN:${userData.Name}\nTEL;TYPE=CELL:${userData.Mobile}\nEMAIL:${userData.Email}\nEND:VCARD`;
-            const blob = new Blob([vcfData], { type: 'text/vcard' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${userData.Name}.vcf`;
-            a.click();
+            // CRITICAL: Force re-render icons after DOM is ready
+            lucide.createIcons();
         }
 
         function checkPin() {
@@ -147,25 +134,25 @@
 
         function setupEditForm() {
             const fields = [
-                {id: 'name', label: 'Name', val: userData.Name},
-                {id: 'title', label: 'Title', val: userData.Title},
+                {id: 'name', label: 'Full Name', val: userData.Name},
+                {id: 'title', label: 'Designation', val: userData.Title},
                 {id: 'company', label: 'Company', val: userData.Company},
                 {id: 'mobile', label: 'Mobile', val: userData.Mobile},
                 {id: 'email', label: 'Email', val: userData.Email},
                 {id: 'website', label: 'Website', val: userData.Website},
-                {id: 'facebook', label: 'Facebook', val: userData.Facebook},
-                {id: 'linkedin', label: 'LinkedIn', val: userData.LinkedIn},
-                {id: 'address', label: 'Address', val: userData.Address},
-                {id: 'services', label: 'Services', val: userData.Services},
-                {id: 'photo', label: 'Photo URL', val: userData.Photo},
-                {id: 'new-pin', label: 'Admin PIN', val: userData.Admin_PIN}
+                {id: 'facebook', label: 'Facebook URL', val: userData.Facebook},
+                {id: 'linkedin', label: 'LinkedIn URL', val: userData.LinkedIn},
+                {id: 'address', label: 'Office Address', val: userData.Address},
+                {id: 'services', label: 'Expertise/Services', val: userData.Services},
+                {id: 'photo', label: 'Photo Link (Direct)', val: userData.Photo},
+                {id: 'new-pin', label: 'Change Admin PIN', val: userData.Admin_PIN}
             ];
             document.getElementById('edit-form-fields').innerHTML = fields.map(f => `<div><label class="text-[10px] font-bold text-slate-400 block mb-1 uppercase">${f.label}</label><input id="inp-${f.id}" value="${f.val || ''}" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium"></div>`).join('');
         }
 
         async function saveData() {
             const btn = document.getElementById('save-btn');
-            btn.innerText = "Saving..."; btn.disabled = true;
+            btn.innerText = "Syncing Data..."; btn.disabled = true;
             const data = { 
                 id: PROFILE_ID, 
                 pin: document.getElementById('inp-new-pin').value,
@@ -184,12 +171,14 @@
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
                 location.reload();
-            } catch (e) { alert("Save failed!"); btn.disabled = false; btn.innerText = "Sync to Cloud"; }
+            } catch (e) { alert("Error saving data."); btn.disabled = false; btn.innerText = "Update Now"; }
         }
 
         function openModal(id) { document.getElementById(id).style.display = (id === 'edit-modal' ? 'block' : 'flex'); }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        init();
+        
+        // Initial icon load
+        window.onload = () => { lucide.createIcons(); init(); };
     </script>
 </body>
 </html>
