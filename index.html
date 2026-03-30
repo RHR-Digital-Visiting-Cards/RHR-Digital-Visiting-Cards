@@ -16,25 +16,20 @@
         .social-text-link { flex: 1; padding: 1rem; text-align: center; border-radius: 1rem; background: #f8fafc; border: 1px solid #f1f5f9; color: #334155; font-weight: 600; font-size: 0.8rem; transition: all 0.3s; }
         .social-text-link:hover { background: #eff6ff; color: #2563eb; transform: translateY(-2px); }
         
-        /* Stylized Color Picker to mimic user's image */
-        input[type="color"] { border: none; width: 48px; height: 48px; border-radius: 12px; cursor: pointer; background-color: transparent; }
-        input[type="color"]::-webkit-color-swatch { border: 2px solid #e2e8f0; border-radius: 12px; }
+        /* Transition properties for smooth color changes */
+        #header-bg, #save-btn-view, body { transition: background-color 0.3s, color 0.3s; }
     </style>
 </head>
-<body id="body-bg" class="min-h-screen flex items-center justify-center p-4 bg-[#f3f4f6]">
-
-    <button onclick="openModal('pin-modal')" class="fixed top-6 right-6 p-3 bg-white shadow-lg rounded-full z-50 text-slate-400">
+<body id="body-bg" class="min-h-screen flex items-center justify-center p-4 bg-[#0100f0]"> <button onclick="openModal('pin-modal')" class="fixed top-6 right-6 p-3 bg-white shadow-lg rounded-full z-50 text-slate-400">
         <i data-lucide="settings" class="w-5 h-5"></i>
     </button>
 
-    <div id="main-loader" class="text-slate-400 font-medium animate-pulse italic">Syncing with RHR Cloud...</div>
+    <div id="main-loader" class="text-slate-400 font-medium animate-pulse italic">RHR Smart Card is connecting...</div>
     
     <div id="card-container" class="max-w-sm w-full glass-card shadow-2xl overflow-hidden hidden">
-        <div class="h-28 bg-slate-900"></div>
-        
-        <div class="px-6 pb-8 -mt-14 text-center">
+        <div id="header-bg" class="h-28 bg-[#1e293b]"></div> <div class="px-6 pb-8 -mt-14 text-center">
             <img id="view-photo" src="" alt="Profile" class="profile-img rounded-full mx-auto mb-3 bg-slate-100">
-            <h1 id="view-name" class="text-xl font-bold text-slate-800 tracking-tight"></h1>
+            <h1 id="view-name" class="text-xl font-bold tracking-tight text-slate-800"></h1>
             <p id="view-title" class="text-blue-600 font-bold text-[10px] uppercase tracking-widest italic"></p>
             <p id="view-company" class="text-slate-400 text-[10px] font-bold mb-4 uppercase tracking-wider"></p>
             
@@ -42,7 +37,7 @@
                 <p id="view-bio" class="text-slate-500 text-xs leading-relaxed italic"></p>
             </div>
 
-            <button onclick="saveVCF()" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold text-sm mb-6 flex items-center justify-center gap-2 shadow-lg hover:bg-slate-800 transition-all">
+            <button id="save-btn-view" onclick="saveVCF()" class="w-full bg-[#1e293b] text-white py-4 rounded-2xl font-bold text-sm mb-6 flex items-center justify-center gap-2 shadow-lg hover:bg-slate-800 transition-all">
                 <i data-lucide="user-plus" class="w-4 h-4"></i> Save Contact
             </button>
 
@@ -92,31 +87,39 @@
     <div id="edit-modal" class="fixed inset-0 bg-white z-[200] hidden overflow-y-auto p-6">
         <div class="max-w-md mx-auto pb-20 text-slate-800">
             <div class="flex justify-between items-center mb-10 sticky top-0 bg-white py-4 border-b">
-                <h2 class="text-xl font-bold">Profile & Card Settings</h2>
+                <h2 class="text-xl font-bold text-slate-800">Profile & Card Settings</h2>
                 <button onclick="closeModal('edit-modal')" class="p-2 bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             
             <div id="edit-form-fields" class="space-y-5"></div>
             
+            <div class="mt-8 p-6 bg-slate-50 rounded-2xl border border-slate-100 space-y-5">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest border-b pb-2">Appearance (Saves Locally)</p>
+                
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between gap-4">
+                        <label class="text-xs font-semibold text-slate-700">Card Header (Top Section)</label>
+                        <input type="color" id="inp-headercolor" oninput="changeColors()" class="w-10 h-10 border-0 cursor-pointer" value="#1e293b">
+                    </div>
+                    <div class="flex items-center justify-between gap-4">
+                        <label class="text-xs font-semibold text-slate-700">Save Button Color</label>
+                        <input type="color" id="inp-btncolor" oninput="changeColors()" class="w-10 h-10 border-0 cursor-pointer" value="#1e293b">
+                    </div>
+                    <div class="flex items-center justify-between gap-4 border-t pt-4">
+                        <label class="text-xs font-semibold text-slate-700">Main Background Color</label>
+                        <input type="color" id="inp-bgcolor" oninput="changeColors()" class="w-10 h-10 border-0 cursor-pointer" value="#0100f0">
+                    </div>
+                </div>
+            </div>
+
             <div class="mt-8 p-5 bg-blue-50/50 rounded-2xl border border-blue-100 flex items-center justify-between gap-4">
                 <div class="flex-1">
                     <p class="text-[10px] font-extrabold text-blue-400 uppercase tracking-widest mb-1">Customer Support ID</p>
                     <p id="display-id" class="text-base font-mono font-extrabold text-blue-800 tracking-tighter"></p>
                 </div>
-                <a href="https://t.me/yourtelegramusername" target="_blank" class="text-[11px] font-extrabold bg-blue-100 text-blue-700 px-4 py-2.5 rounded-lg uppercase shadow hover:bg-blue-200 transition-colors">
+                <a id="rhr-support-btn" href="https://t.me/yourtelegramusername" target="_blank" class="text-[11px] font-extrabold bg-blue-100 text-blue-700 px-4 py-2.5 rounded-lg uppercase shadow hover:bg-blue-200 transition-colors">
                     RHR SUPPORT
                 </a>
-            </div>
-
-            <div class="mt-8 p-5 bg-slate-50 rounded-2xl border border-slate-100">
-                <div class="flex items-center gap-4 justify-between">
-                    <div>
-                        <p class="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-widest">Background Color</p>
-                        <p class="text-xs text-slate-500 italic">Changes apply only on this device.</p>
-                    </div>
-                    <input type="color" id="inp-bgcolor" oninput="changeBgColor()" value="#f3f4f6">
-                </div>
-                <p id="color-code" class="mt-2 text-[10px] font-mono font-bold text-slate-400">#f3f4f6</p>
             </div>
 
             <button onclick="saveData()" id="save-btn" class="w-full mt-10 py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase tracking-widest shadow-xl hover:bg-slate-800 transition-all">Synchronize Cloud Data</button>
@@ -124,20 +127,16 @@
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwkyQi85jW-y0zV7ifOSmiz2WxD7LEgZZlk1vcv4gcIIIIfumhLOcMjgoZZgVZsDp5Ycg/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9mu41IvW_8bYJubxK4SeNTLj0aDSy6PvODfywQNd2z3xEVH6LSBdFlVsTlDFw9ljBMA/exec";
         const urlParams = new URLSearchParams(window.location.search);
         const PROFILE_ID = urlParams.get('id') || "RHR-BIZ-01";
         let userData = {};
 
         async function init() {
-            // Check for locally saved BG color first
-            const localBgColor = localStorage.getItem(`rhr_bg_color_${PROFILE_ID}`);
-            if (localBgColor) {
-                document.getElementById('body-bg').style.backgroundColor = localBgColor;
-                document.getElementById('inp-bgcolor').value = localBgColor;
-                document.getElementById('color-code').innerText = localBgColor;
-            }
-
+            lucide.createIcons();
+            // Critical: Apply local color settings first
+            applyLocalColors();
+            
             try {
                 const res = await fetch(`${SCRIPT_URL}?id=${PROFILE_ID}`);
                 const result = await res.json();
@@ -166,9 +165,44 @@
             document.getElementById('main-loader').classList.add('hidden');
             document.getElementById('card-container').classList.remove('hidden');
             
-            // Re-render icons after data load
             setTimeout(() => { lucide.createIcons(); }, 100);
         }
+
+        // --- Color Customization Logic ---
+        function applyLocalColors() {
+            const settings = JSON.parse(localStorage.getItem(`rhr_card_colors_${PROFILE_ID}`)) || {};
+            // BG Color
+            const bgColor = settings.bgColor || "#0100f0";
+            document.getElementById('body-bg').style.backgroundColor = bgColor;
+            document.getElementById('inp-bgcolor').value = bgColor;
+            
+            // Header Color
+            const headerColor = settings.headerColor || "#1e293b";
+            document.getElementById('header-bg').style.backgroundColor = headerColor;
+            document.getElementById('inp-headercolor').value = headerColor;
+            
+            // Button Color
+            const btnColor = settings.btnColor || "#1e293b";
+            document.getElementById('save-btn-view').style.backgroundColor = btnColor;
+            document.getElementById('inp-btncolor').value = btnColor;
+        }
+
+        function changeColors() {
+            const settings = {
+                bgColor: document.getElementById('inp-bgcolor').value,
+                headerColor: document.getElementById('inp-headercolor').value,
+                btnColor: document.getElementById('inp-btncolor').value
+            };
+            
+            // Apply live changes
+            document.getElementById('body-bg').style.backgroundColor = settings.bgColor;
+            document.getElementById('header-bg').style.backgroundColor = settings.headerColor;
+            document.getElementById('save-btn-view').style.backgroundColor = settings.btnColor;
+            
+            // Save locally
+            localStorage.setItem(`rhr_card_colors_${PROFILE_ID}`, JSON.stringify(settings));
+        }
+        // ---------------------------------
 
         function checkPin() {
             if(document.getElementById('pin-input').value == (userData.Admin_PIN || "1111")) {
@@ -184,17 +218,17 @@
             const fields = [
                 {id: 'name', label: 'Full Name', val: userData.Name},
                 {id: 'title', label: 'Designation', val: userData.Title},
-                {id: 'company', label: 'Company', val: userData.Company},
+                {id: 'company', label: 'Company Name', val: userData.Company},
                 {id: 'bio', label: 'About/Bio', val: userData.Bio},
-                {id: 'mobile', label: 'Mobile', val: userData.Mobile},
-                {id: 'email', label: 'Email', val: userData.Email},
-                {id: 'website', label: 'Website', val: userData.Website},
+                {id: 'mobile', label: 'Mobile Number', val: userData.Mobile},
+                {id: 'email', label: 'Email Address', val: userData.Email},
+                {id: 'website', label: 'Website URL', val: userData.Website},
                 {id: 'facebook', label: 'Facebook URL', val: userData.Facebook},
                 {id: 'linkedin', label: 'LinkedIn URL', val: userData.LinkedIn},
-                {id: 'address', label: 'Address', val: userData.Address},
-                {id: 'services', label: 'Services', val: userData.Services},
-                {id: 'photo', label: 'Photo Link', val: userData.Photo},
-                {id: 'new-pin', label: 'Admin PIN', val: userData.Admin_PIN}
+                {id: 'address', label: 'Office Address', val: userData.Address},
+                {id: 'services', label: 'Expertise/Services', val: userData.Services},
+                {id: 'photo', label: 'Profile Photo URL', val: userData.Photo},
+                {id: 'new-pin', label: 'Admin Access PIN', val: userData.Admin_PIN}
             ];
             document.getElementById('edit-form-fields').innerHTML = fields.map(f => `
                 <div>
@@ -205,7 +239,7 @@
 
         async function saveData() {
             const btn = document.getElementById('save-btn');
-            btn.innerText = "Synchronizing Data..."; btn.disabled = true;
+            btn.innerText = "Synchronizing..."; btn.disabled = true;
             const data = { 
                 id: PROFILE_ID, 
                 pin: document.getElementById('inp-new-pin').value,
@@ -225,20 +259,11 @@
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
                 location.reload();
-            } catch (e) { alert("Save failed! Check internet."); btn.disabled = false; btn.innerText = "Synchronize Cloud Data"; }
-        }
-
-        // Canva-style BG Color Picker Logic
-        function changeBgColor() {
-            const colorCode = document.getElementById('inp-bgcolor').value;
-            document.getElementById('body-bg').style.backgroundColor = colorCode;
-            document.getElementById('color-code').innerText = colorCode;
-            // Save locally so it persists
-            localStorage.setItem(`rhr_bg_color_${PROFILE_ID}`, colorCode);
+            } catch (e) { alert("Data sync failed! Please try again."); btn.disabled = false; btn.innerText = "Synchronize Cloud Data"; }
         }
 
         function saveVCF() {
-            const vcfData = `BEGIN:VCARD\nVERSION:3.0\nFN:${userData.Name}\nORG:${userData.Company}\nTITLE:${userData.Title}\nTEL;TYPE=CELL:${userData.Mobile}\nEMAIL:${userData.Email}\nURL:${userData.Website}\nEND:VCARD`;
+            const vcfData = `BEGIN:VCARD\nVERSION:3.0\nFN:${userData.Name}\nORG:${userData.Company}\nTITLE:${userData.Title}\nTEL;TYPE=CELL:${userData.Mobile}\nEMAIL:${userData.Email}\nEND:VCARD`;
             const blob = new Blob([vcfData], { type: 'text/vcard' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a'); a.href = url; a.download = `${userData.Name}.vcf`; a.click();
