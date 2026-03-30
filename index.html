@@ -8,7 +8,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.5s ease; }
         .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 2.5rem; }
         .profile-img { width: 110px; height: 110px; object-fit: cover; border: 4px solid white; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
         .icon-box { min-width: 48px; min-height: 48px; flex: 1; display: flex; align-items: center; justify-content: center; border-radius: 1rem; background: #f8fafc; color: #64748b; border: 1px solid #f1f5f9; transition: all 0.3s; }
@@ -17,7 +17,7 @@
         .social-text-link:hover { background: #eff6ff; color: #2563eb; transform: translateY(-2px); }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
+<body id="body-bg" class="min-h-screen flex items-center justify-center p-4 bg-[#f3f4f6]">
 
     <button onclick="openModal('pin-modal')" class="fixed top-6 right-6 p-3 bg-white shadow-lg rounded-full z-50 text-slate-400">
         <i data-lucide="settings" class="w-5 h-5"></i>
@@ -51,24 +51,18 @@
             </div>
 
             <div class="flex justify-center gap-2 mb-8">
-                <a id="link-facebook" href="#" target="_blank" class="social-text-link">Facebook Profile</a>
-                <a id="link-linkedin" href="#" target="_blank" class="social-text-link">LinkedIn Profile</a>
+                <a id="link-facebook" href="#" target="_blank" class="social-text-link">Facebook</a>
+                <a id="link-linkedin" href="#" target="_blank" class="social-text-link">LinkedIn</a>
             </div>
 
             <div class="space-y-3 text-left">
-                <div class="flex gap-4 items-start p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
-                    <i data-lucide="map-pin" class="w-5 h-5 text-slate-400 mt-1"></i>
-                    <div>
-                        <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Office Address</p>
-                        <p id="view-address" class="text-sm text-slate-700 font-semibold"></p>
-                    </div>
+                <div class="p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
+                    <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">Office Address</p>
+                    <p id="view-address" class="text-sm text-slate-700 font-semibold"></p>
                 </div>
-                <div class="flex gap-4 items-start p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
-                    <i data-lucide="briefcase" class="w-5 h-5 text-slate-400 mt-1"></i>
-                    <div>
-                        <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Services</p>
-                        <p id="view-services" class="text-sm text-slate-700 font-semibold"></p>
-                    </div>
+                <div class="p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
+                    <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">Services</p>
+                    <p id="view-services" class="text-sm text-slate-700 font-semibold"></p>
                 </div>
             </div>
         </div>
@@ -88,17 +82,25 @@
     <div id="edit-modal" class="fixed inset-0 bg-white z-[200] hidden overflow-y-auto p-6">
         <div class="max-w-md mx-auto pb-20">
             <div class="flex justify-between items-center mb-10 sticky top-0 bg-white py-4 border-b">
-                <h2 class="text-xl font-bold text-slate-800">Update Profile</h2>
+                <h2 class="text-xl font-bold text-slate-800">Profile Settings</h2>
                 <button onclick="closeModal('edit-modal')" class="p-2 bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div id="edit-form-fields" class="space-y-5"></div>
-            <button onclick="saveData()" id="save-btn" class="w-full mt-10 py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase tracking-widest shadow-xl">Update Cloud Data</button>
+            
+            <div class="mt-8 p-4 bg-blue-50 rounded-2xl border border-blue-100">
+                <p class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">Customer Support ID</p>
+                <div class="flex justify-between items-center">
+                    <p id="display-id" class="text-sm font-mono font-bold text-blue-700 tracking-tighter"></p>
+                    <span class="text-[9px] bg-blue-100 text-blue-600 px-2 py-1 rounded font-bold uppercase">RHR SUPPORT</span>
+                </div>
+            </div>
+
+            <button onclick="saveData()" id="save-btn" class="w-full mt-10 py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase tracking-widest shadow-xl">Update & Sync</button>
         </div>
     </div>
 
     <script>
-        // Updated Script URL
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwkyQi85jW-y0zV7ifOSmiz2WxD7LEgZZlk1vcv4gcIIIIfumhLOcMjgoZZgVZsDp5Ycg/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9mu41IvW_8bYJubxK4SeNTLj0aDSy6PvODfywQNd2z3xEVH6LSBdFlVsTlDFw9ljBMA/exec";
         const urlParams = new URLSearchParams(window.location.search);
         const PROFILE_ID = urlParams.get('id') || "RHR-BIZ-01";
         let userData = {};
@@ -110,16 +112,19 @@
                 if (result.success) { 
                     userData = result.data; 
                     renderView(); 
-                } else { document.getElementById('main-loader').innerText = "Card ID Not Found!"; }
+                } else { document.getElementById('main-loader').innerText = "Card Not Found!"; }
             } catch (e) { console.error(e); }
         }
 
         function renderView() {
+            // Apply Background Color
+            if(userData.BG_Color) document.getElementById('body-bg').style.backgroundColor = userData.BG_Color;
+
             document.getElementById('view-photo').src = userData.Photo || 'https://via.placeholder.com/150';
             document.getElementById('view-name').innerText = userData.Name;
             document.getElementById('view-title').innerText = userData.Title;
             document.getElementById('view-company').innerText = userData.Company;
-            document.getElementById('view-bio').innerText = userData.Bio || "Add your company bio here...";
+            document.getElementById('view-bio').innerText = userData.Bio || "";
             document.getElementById('view-address').innerText = userData.Address;
             document.getElementById('view-services').innerText = userData.Services;
 
@@ -131,24 +136,13 @@
 
             document.getElementById('main-loader').classList.add('hidden');
             document.getElementById('card-container').classList.remove('hidden');
-            
-            // Force re-render icons
             lucide.createIcons();
-        }
-
-        function saveVCF() {
-            const vcfData = `BEGIN:VCARD\nVERSION:3.0\nFN:${userData.Name}\nORG:${userData.Company}\nTITLE:${userData.Title}\nTEL;TYPE=CELL:${userData.Mobile}\nEMAIL:${userData.Email}\nURL:${userData.Website}\nEND:VCARD`;
-            const blob = new Blob([vcfData], { type: 'text/vcard' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${userData.Name}.vcf`;
-            a.click();
         }
 
         function checkPin() {
             if(document.getElementById('pin-input').value == (userData.Admin_PIN || "1111")) {
                 setupEditForm();
+                document.getElementById('display-id').innerText = PROFILE_ID;
                 closeModal('pin-modal');
                 openModal('edit-modal');
             } else { alert("Incorrect PIN!"); }
@@ -159,8 +153,8 @@
             const fields = [
                 {id: 'name', label: 'Full Name', val: userData.Name},
                 {id: 'title', label: 'Designation', val: userData.Title},
-                {id: 'company', label: 'Company', val: userData.Company},
-                {id: 'bio', label: 'Company Bio', val: userData.Bio},
+                {id: 'bio', label: 'About/Bio', val: userData.Bio},
+                {id: 'bgcolor', label: 'BG Color (e.g. #f3f4f6)', val: userData.BG_Color || '#f3f4f6'},
                 {id: 'mobile', label: 'Mobile', val: userData.Mobile},
                 {id: 'email', label: 'Email', val: userData.Email},
                 {id: 'website', label: 'Website', val: userData.Website},
@@ -168,26 +162,26 @@
                 {id: 'linkedin', label: 'LinkedIn URL', val: userData.LinkedIn},
                 {id: 'address', label: 'Address', val: userData.Address},
                 {id: 'services', label: 'Services', val: userData.Services},
-                {id: 'photo', label: 'Photo URL', val: userData.Photo},
+                {id: 'photo', label: 'Photo Link', val: userData.Photo},
                 {id: 'new-pin', label: 'Admin PIN', val: userData.Admin_PIN}
             ];
             document.getElementById('edit-form-fields').innerHTML = fields.map(f => `
                 <div>
                     <label class="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-widest">${f.label}</label>
-                    ${f.id === 'bio' ? `<textarea id="inp-bio" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium text-sm" rows="3">${f.val || ''}</textarea>` : `<input id="inp-${f.id}" value="${f.val || ''}" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium text-sm">`}
+                    ${f.id === 'bio' ? `<textarea id="inp-bio" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium text-sm" rows="2">${f.val || ''}</textarea>` : `<input id="inp-${f.id}" value="${f.val || ''}" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium text-sm">`}
                 </div>`).join('');
         }
 
         async function saveData() {
             const btn = document.getElementById('save-btn');
-            btn.innerText = "Saving Data..."; btn.disabled = true;
+            btn.innerText = "Syncing Data..."; btn.disabled = true;
             const data = { 
                 id: PROFILE_ID, 
                 pin: document.getElementById('inp-new-pin').value,
                 name: document.getElementById('inp-name').value, 
                 title: document.getElementById('inp-title').value,
-                company: document.getElementById('inp-company').value, 
                 bio: document.getElementById('inp-bio').value,
+                bgcolor: document.getElementById('inp-bgcolor').value,
                 mobile: document.getElementById('inp-mobile').value,
                 email: document.getElementById('inp-email').value, 
                 website: document.getElementById('inp-website').value,
@@ -200,12 +194,18 @@
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
                 location.reload();
-            } catch (e) { alert("Update failed!"); btn.disabled = false; btn.innerText = "Update Cloud Data"; }
+            } catch (e) { alert("Error saving data!"); btn.disabled = false; btn.innerText = "Update & Sync"; }
+        }
+
+        function saveVCF() {
+            const vcfData = `BEGIN:VCARD\nVERSION:3.0\nFN:${userData.Name}\nTEL;TYPE=CELL:${userData.Mobile}\nEMAIL:${userData.Email}\nEND:VCARD`;
+            const blob = new Blob([vcfData], { type: 'text/vcard' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = `${userData.Name}.vcf`; a.click();
         }
 
         function openModal(id) { document.getElementById(id).style.display = (id === 'edit-modal' ? 'block' : 'flex'); }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        
         window.onload = () => { lucide.createIcons(); init(); };
     </script>
 </body>
