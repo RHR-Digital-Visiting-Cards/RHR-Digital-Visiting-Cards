@@ -19,46 +19,45 @@
         .theme-bold { background: #ffffff; border-top: 10px solid; }
 
         .profile-img { width: 110px; height: 110px; object-fit: cover; border: 4px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .theme-btn { padding: 10px; border: 2px solid #f1f5f9; border-radius: 12px; cursor: pointer; text-align: center; font-size: 10px; font-weight: bold; }
-        .theme-btn.active { border-color: #2563eb; background: #eff6ff; color: #2563eb; }
-        .edit-input { w-full p-4 bg-slate-50 rounded-xl border-none outline-none text-sm transition-all; }
-        .edit-input:focus { bg-white; ring-1; ring-blue-100; }
+        .theme-btn { padding: 10px; border: 2px solid #f1f5f9; border-radius: 12px; cursor: pointer; text-align: center; font-size: 10px; font-weight: bold; transition: all 0.2s; }
+        .theme-btn.active { border-color: #2563eb; background: #eff6ff; color: #2563eb; transform: scale(1.05); }
     </style>
 </head>
-<body id="body-bg" class="min-h-screen flex items-center justify-center p-4 bg-[#f1ff2e]">
+<body id="body-bg" class="min-h-screen flex items-center justify-center p-4">
 
-    <button onclick="openModal('pin-modal')" class="fixed top-6 right-6 p-3 bg-white shadow-lg rounded-full z-50 text-slate-400">
+    <button onclick="openModal('pin-modal')" class="fixed top-6 right-6 p-3 bg-white shadow-lg rounded-full z-50 text-slate-400 hover:text-blue-600 transition-colors">
         <i data-lucide="settings" class="w-5 h-5"></i>
     </button>
 
-    <div id="card-container" class="max-w-sm w-full glass-card shadow-2xl overflow-hidden hidden theme-classic">
-        <div id="header-bg" class="h-28 bg-[#1e293b]"></div>
+    <div id="card-container" class="max-w-sm w-full glass-card shadow-2xl overflow-hidden hidden">
+        <div id="header-bg" class="h-28"></div>
         
         <div class="px-6 pb-8 -mt-14 text-center">
             <img id="view-photo" src="" class="profile-img rounded-full mx-auto mb-3 bg-slate-100">
             <h1 id="view-name" class="text-xl font-bold text-slate-800 tracking-tight"></h1>
             <p id="view-title" class="text-blue-600 font-bold text-[10px] uppercase tracking-widest italic"></p>
             <p id="view-company" class="text-slate-400 text-[10px] font-bold mt-1 uppercase"></p>
-            <p id="view-bio" class="text-slate-500 text-xs mt-4 italic leading-relaxed"></p>
+            <p id="view-bio" class="text-slate-500 text-xs mt-4 italic leading-relaxed px-2"></p>
 
-            <button id="save-btn-view" onclick="saveVCF()" class="w-full text-white py-4 rounded-2xl font-bold text-sm my-6 flex items-center justify-center gap-2 shadow-lg hover:bg-slate-800 transition-all">
+            <button id="save-btn-view" onclick="saveVCF()" class="w-full text-white py-4 rounded-2xl font-bold text-sm my-6 flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-95">
                 <i data-lucide="user-plus" class="w-4 h-4"></i> Save Contact
             </button>
 
             <div class="space-y-4 text-left">
-                <div class="flex gap-4 items-center p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                    <i data-lucide="map-pin" class="w-5 h-5 text-slate-400 mt-1"></i>
+                <div class="flex gap-4 items-center p-4 bg-slate-50/80 rounded-2xl border border-slate-100">
+                    <i data-lucide="map-pin" class="w-5 h-5 text-slate-400"></i>
                     <div>
-                        <p class="text-[9px] font-bold text-slate-400 uppercase">Office Address</p>
-                        <p id="view-address" class="text-sm text-slate-700 font-semibold"></p>
+                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">Office Address</p>
+                        <p id="view-address" class="text-sm text-slate-700 font-semibold leading-tight"></p>
                     </div>
                 </div>
-                <div class="p-4 bg-blue-50 rounded-2xl flex items-center justify-between gap-4">
-                    <div>
-                        <p class="text-[9px] font-extrabold text-blue-400 uppercase tracking-widest">Support ID</p>
-                        <p id="display-support-id" class="text-sm font-mono font-extrabold text-blue-700"></p>
-                    </div>
-                    <a href="https://t.me/rhr_digital_Service" target="_blank" class="px-4 py-2.5 bg-blue-600 text-white rounded-lg text-xs font-bold uppercase shadow-lg">RHR Support</a>
+
+                <div class="p-4 bg-blue-50/50 rounded-2xl border border-blue-100 flex items-center justify-between">
+                   <div>
+                        <p class="text-[9px] font-bold text-blue-400 uppercase">Customer Support ID</p>
+                        <p class="text-xs font-mono font-bold text-blue-700" id="support-id-display"></p>
+                   </div>
+                   <a href="https://t.me/rhr_digital_Service" target="_blank" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-[10px] font-bold uppercase shadow-md">RHR Support</a>
                 </div>
             </div>
         </div>
@@ -66,52 +65,57 @@
 
     <div id="pin-modal" class="fixed inset-0 bg-slate-900/90 hidden items-center justify-center p-6 z-[100]">
         <div class="bg-white rounded-3xl p-8 max-w-xs w-full text-center">
-            <h3 class="font-bold mb-6">Enter Admin PIN</h3>
-            <input type="password" id="pin-input" class="w-full text-center text-3xl font-bold border-b-2 mb-8 focus:outline-none" maxlength="4" placeholder="••••">
+            <h3 class="font-bold mb-6 text-slate-800">Admin Authentication</h3>
+            <input type="password" id="pin-input" class="w-full text-center text-3xl font-bold border-b-2 mb-8 focus:outline-none focus:border-blue-500 transition-colors" maxlength="4" placeholder="••••">
             <div class="flex gap-2">
-                <button onclick="closeModal('pin-modal')" class="flex-1 text-slate-400 font-bold">Cancel</button>
-                <button onclick="checkPin()" class="flex-1 py-3 bg-blue-600 text-white rounded-xl font-bold">Login</button>
+                <button onclick="closeModal('pin-modal')" class="flex-1 text-slate-400 font-bold hover:bg-slate-50 py-3 rounded-xl transition-colors">Cancel</button>
+                <button onclick="checkPin()" class="flex-1 py-3 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-200">Login</button>
             </div>
         </div>
     </div>
 
     <div id="edit-modal" class="fixed inset-0 bg-white hidden overflow-y-auto p-6 z-[200]">
         <div class="max-w-md mx-auto pb-10">
-            <div class="flex justify-between items-center mb-8 border-b pb-4">
-                <h2 class="text-xl font-bold text-slate-800">Edit Profile & Style</h2>
-                <button onclick="closeModal('edit-modal')" class="p-2 bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <div class="flex justify-between items-center mb-8 sticky top-0 bg-white py-2 border-b">
+                <h2 class="text-xl font-bold text-slate-800">Profile & Card Settings</h2>
+                <button onclick="closeModal('edit-modal')" class="p-2 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
 
-            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">Profile Information</p>
-            <div id="edit-form-fields" class="space-y-4 mb-8"></div>
-            
-            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4 border-t pt-4">Card Style (UI Theme)</p>
-            <div class="grid grid-cols-3 gap-2 mb-8">
-                <div onclick="setTheme('theme-classic')" id="btn-theme-classic" class="theme-btn">Classic</div>
-                <div onclick="setTheme('theme-border')" id="btn-theme-border" class="theme-btn">Modern</div>
-                <div onclick="setTheme('theme-glass')" id="btn-theme-glass" class="theme-btn">Glass</div>
-                <div onclick="setTheme('theme-minimal')" id="btn-theme-minimal" class="theme-btn">Minimal</div>
-                <div onclick="setTheme('theme-bold')" id="btn-theme-bold" class="theme-btn">Bold</div>
-            </div>
-
-            <div class="p-5 bg-slate-50 rounded-2xl space-y-4 mb-8">
-                <p class="text-[10px] font-bold text-slate-400 uppercase text-center border-b pb-2 mb-4">Colors (Cloud Sync)</p>
-                <div class="flex justify-between items-center gap-4">
-                    <label class="text-xs font-semibold">Header & Buttons</label>
-                    <input type="color" id="inp-headercolor" oninput="liveColor()" class="w-10 h-10 border-none bg-transparent">
+            <div class="mb-10">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">Choose Theme</p>
+                <div class="grid grid-cols-3 gap-2 mb-6">
+                    <div onclick="setTheme('theme-classic')" id="btn-theme-classic" class="theme-btn">Classic</div>
+                    <div onclick="setTheme('theme-border')" id="btn-theme-border" class="theme-btn">Modern</div>
+                    <div onclick="setTheme('theme-glass')" id="btn-theme-glass" class="theme-btn">Glass</div>
+                    <div onclick="setTheme('theme-minimal')" id="btn-theme-minimal" class="theme-btn">Minimal</div>
+                    <div onclick="setTheme('theme-bold')" id="btn-theme-bold" class="theme-btn">Bold</div>
                 </div>
-                <div class="flex justify-between items-center gap-4 border-t pt-2">
-                    <label class="text-xs font-semibold">Main Background</label>
-                    <input type="color" id="inp-bgcolor" oninput="liveColor()" class="w-10 h-10 border-none bg-transparent">
+
+                <div class="bg-slate-50 p-6 rounded-2xl space-y-4">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase text-center border-b pb-2 mb-2">Color Palette</p>
+                    <div class="flex justify-between items-center">
+                        <label class="text-xs font-bold text-slate-600 tracking-tight">Header & Buttons</label>
+                        <input type="color" id="inp-headercolor" oninput="liveColor()" class="w-10 h-10 border-none bg-transparent cursor-pointer">
+                    </div>
+                    <div class="flex justify-between items-center border-t pt-3">
+                        <label class="text-xs font-bold text-slate-600 tracking-tight">Main Background Color</label>
+                        <input type="color" id="inp-bgcolor" oninput="liveColor()" class="w-10 h-10 border-none bg-transparent cursor-pointer">
+                    </div>
                 </div>
             </div>
 
-            <button onclick="saveToCloud()" id="sync-btn" class="w-full py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase shadow-xl hover:bg-slate-800 transition-all">Synchronize Cloud Data</button>
+            <div class="mb-8">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">Card Information</p>
+                <div id="info-fields-container" class="space-y-4">
+                    </div>
+            </div>
+
+            <button onclick="saveToCloud()" id="sync-btn" class="w-full py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase tracking-widest shadow-2xl transition-all active:scale-95">Synchronize Cloud Data</button>
         </div>
     </div>
 
     <script>
-        const SCRIPT_URL = "YOUR_NEW_DEPLOYMENT_URL_HERE";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyZPziEDdryyiRz60t4Oqb1wRECY-p--ufsN56XluO-PSWLxOVxrFLKXLh8UD4d6rhcsg/exec";
         const urlParams = new URLSearchParams(window.location.search);
         const PROFILE_ID = urlParams.get('id') || "RHR-BIZ-01";
         let userData = {};
@@ -123,15 +127,15 @@
                 const result = await res.json();
                 if (result.success) {
                     userData = result.data;
-                    document.getElementById('display-support-id').innerText = PROFILE_ID;
+                    document.getElementById('support-id-display').innerText = PROFILE_ID;
                     applyColors(userData.BG_Color, userData.Header_Color, userData.Theme);
                     renderView();
                 }
-            } catch (e) { console.error("Initialize failed", e); }
+            } catch (e) { console.error("Init Error:", e); }
         }
 
         function applyColors(bg, head, theme) {
-            document.body.style.backgroundColor = bg || "#f1ff2e";
+            document.body.style.backgroundColor = bg || "#f1f5f9";
             document.getElementById('header-bg').style.backgroundColor = head || "#1e293b";
             document.getElementById('save-btn-view').style.backgroundColor = head || "#1e293b";
             
@@ -162,7 +166,7 @@
         async function saveToCloud() {
             const btn = document.getElementById('sync-btn');
             const originalText = btn.innerText;
-            btn.innerText = "Synchronizing with Cloud...";
+            btn.innerText = "Syncing with Cloud...";
             btn.disabled = true;
 
             const data = {
@@ -170,28 +174,28 @@
                 bgColor: document.getElementById('inp-bgcolor').value,
                 headerColor: document.getElementById('inp-headercolor').value,
                 theme: currentTheme,
-                // Ager fields update করার জন্য
-                name: document.getElementById('inp-name').value, 
-                mobile: document.getElementById('inp-mobile').value, 
+                // Update all info fields
+                name: document.getElementById('inp-name').value,
                 title: document.getElementById('inp-title').value,
-                photo: document.getElementById('inp-photo').value, 
-                bio: document.getElementById('inp-bio').value, 
-                address: document.getElementById('inp-address').value,
-                company: document.getElementById('inp-company').value, 
-                services: document.getElementById('inp-services').value,
-                email: document.getElementById('inp-email').value, 
-                website: document.getElementById('inp-website').value, 
-                facebook: document.getElementById('inp-facebook').value, 
+                company: document.getElementById('inp-company').value,
+                bio: document.getElementById('inp-bio').value,
+                mobile: document.getElementById('inp-mobile').value,
+                email: document.getElementById('inp-email').value,
+                website: document.getElementById('inp-website').value,
+                facebook: document.getElementById('inp-facebook').value,
                 linkedin: document.getElementById('inp-linkedin').value,
-                pin: document.getElementById('inp-new-pin').value // Admin PIN
+                address: document.getElementById('inp-address').value,
+                services: document.getElementById('inp-services').value,
+                photo: document.getElementById('inp-photo').value,
+                pin: document.getElementById('inp-pin').value
             };
 
             try {
-                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
-                alert("Saved to Google Sheets! Everyone will now see this update.");
+                const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
+                alert("Data Synchronized Successfully!");
                 location.reload();
             } catch (e) {
-                alert("Sync failed. Check your internet.");
+                alert("Error saving data.");
                 btn.innerText = originalText;
                 btn.disabled = false;
             }
@@ -201,9 +205,9 @@
             document.getElementById('view-name').innerText = userData.Name;
             document.getElementById('view-photo').src = userData.Photo || 'https://via.placeholder.com/150';
             document.getElementById('view-title').innerText = userData.Title;
+            document.getElementById('view-company').innerText = userData.Company || "";
             document.getElementById('view-bio').innerText = userData.Bio || "";
             document.getElementById('view-address').innerText = userData.Address;
-            document.getElementById('view-company').innerText = userData.Company || "";
             document.getElementById('card-container').classList.remove('hidden');
             lucide.createIcons();
         }
@@ -211,35 +215,40 @@
         function checkPin() {
             const pin = document.getElementById('pin-input').value;
             if(pin == (userData.Admin_PIN || "1111")) {
-                setupEditForm();
                 closeModal('pin-modal');
+                setupEditForm();
                 openModal('edit-modal');
-                document.getElementById('inp-bgcolor').value = userData.BG_Color || "#f1ff2e";
+                document.getElementById('inp-bgcolor').value = userData.BG_Color || "#f1f5f9";
                 document.getElementById('inp-headercolor').value = userData.Header_Color || "#1e293b";
-            } else { alert("Incorrect Admin PIN"); }
+            } else {
+                alert("Incorrect Admin PIN");
+            }
         }
 
         function setupEditForm() {
             const fields = [
                 {id: 'name', label: 'Full Name', val: userData.Name},
-                {id: 'title', label: 'Designation', val: userData.Title},
-                {id: 'company', label: 'Company Name', val: userData.Company},
-                {id: 'bio', label: 'About/Bio', val: userData.Bio},
+                {id: 'title', label: 'Title / Designation', val: userData.Title},
+                {id: 'company', label: 'Company / Organization', val: userData.Company},
+                {id: 'bio', label: 'About (Bio)', val: userData.Bio},
                 {id: 'mobile', label: 'Mobile Number', val: userData.Mobile},
                 {id: 'email', label: 'Email Address', val: userData.Email},
-                {id: 'website', label: 'Website URL', val: userData.Website},
-                {id: 'facebook', label: 'Facebook URL', val: userData.Facebook},
-                {id: 'linkedin', label: 'LinkedIn URL', val: userData.LinkedIn},
-                {id: 'address', label: 'Office Address', val: userData.Address},
-                {id: 'services', label: 'Expertise/Services', val: userData.Services},
+                {id: 'website', label: 'Website Link', val: userData.Website},
+                {id: 'facebook', label: 'Facebook Link', val: userData.Facebook},
+                {id: 'linkedin', label: 'LinkedIn Link', val: userData.LinkedIn},
+                {id: 'address', label: 'Physical Address', val: userData.Address},
+                {id: 'services', label: 'Expertise / Services', val: userData.Services},
                 {id: 'photo', label: 'Profile Photo URL', val: userData.Photo},
-                {id: 'new-pin', label: 'Admin PIN', val: userData.Admin_PIN}
+                {id: 'pin', label: 'Admin PIN (Security)', val: userData.Admin_PIN}
             ];
-            document.getElementById('edit-form-fields').innerHTML = fields.map(f => `
+
+            const container = document.getElementById('info-fields-container');
+            container.innerHTML = fields.map(f => `
                 <div>
                     <label class="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-widest">${f.label}</label>
-                    ${f.id === 'bio' ? `<textarea id="inp-bio" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium transition-all text-sm" rows="2">${f.val || ''}</textarea>` : `<input id="inp-${f.id}" value="${f.val || ''}" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium transition-all text-sm">`}
-                </div>`).join('');
+                    ${f.id === 'bio' ? `<textarea id="inp-bio" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium text-sm transition-all focus:bg-white focus:ring-1 focus:ring-slate-200" rows="2">${f.val || ''}</textarea>` : `<input id="inp-${f.id}" value="${f.val || ''}" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium text-sm transition-all focus:bg-white focus:ring-1 focus:ring-slate-200">`}
+                </div>
+            `).join('');
         }
 
         function saveVCF() {
