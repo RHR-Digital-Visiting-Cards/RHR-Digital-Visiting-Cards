@@ -15,6 +15,10 @@
         .icon-box:hover { background: #eff6ff; color: #2563eb; transform: translateY(-2px); }
         .social-text-link { flex: 1; padding: 1rem; text-align: center; border-radius: 1rem; background: #f8fafc; border: 1px solid #f1f5f9; color: #334155; font-weight: 600; font-size: 0.8rem; transition: all 0.3s; }
         .social-text-link:hover { background: #eff6ff; color: #2563eb; transform: translateY(-2px); }
+        
+        /* Stylized Color Picker to mimic user's image */
+        input[type="color"] { border: none; width: 48px; height: 48px; border-radius: 12px; cursor: pointer; background-color: transparent; }
+        input[type="color"]::-webkit-color-swatch { border: 2px solid #e2e8f0; border-radius: 12px; }
     </style>
 </head>
 <body id="body-bg" class="min-h-screen flex items-center justify-center p-4 bg-[#f3f4f6]">
@@ -56,20 +60,26 @@
             </div>
 
             <div class="space-y-3 text-left">
-                <div class="p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
-                    <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">Office Address</p>
-                    <p id="view-address" class="text-sm text-slate-700 font-semibold"></p>
+                <div class="flex gap-4 items-start p-4 bg-slate-50/50 rounded-2xl border border-slate-100 shadow-inner">
+                    <i data-lucide="map-pin" class="w-5 h-5 text-slate-400 mt-1"></i>
+                    <div>
+                        <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Office Address</p>
+                        <p id="view-address" class="text-sm text-slate-700 font-semibold"></p>
+                    </div>
                 </div>
-                <div class="p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
-                    <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">Services</p>
-                    <p id="view-services" class="text-sm text-slate-700 font-semibold"></p>
+                <div class="flex gap-4 items-start p-4 bg-slate-50/50 rounded-2xl border border-slate-100 shadow-inner">
+                    <i data-lucide="briefcase" class="w-5 h-5 text-slate-400 mt-1"></i>
+                    <div>
+                        <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Services</p>
+                        <p id="view-services" class="text-sm text-slate-700 font-semibold"></p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <div id="pin-modal" class="fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[100] hidden items-center justify-center p-6">
-        <div class="bg-white rounded-[2rem] p-8 max-w-xs w-full text-center shadow-2xl">
+        <div class="bg-white rounded-[2rem] p-8 max-w-xs w-full text-center shadow-2xl border border-slate-100">
             <h3 class="text-xl font-bold mb-6 text-slate-800">Admin Access</h3>
             <input type="password" id="pin-input" class="w-full text-center text-3xl font-bold border-b-2 border-slate-100 focus:border-blue-600 focus:outline-none mb-8" maxlength="4" placeholder="••••">
             <div class="flex gap-3">
@@ -80,46 +90,65 @@
     </div>
 
     <div id="edit-modal" class="fixed inset-0 bg-white z-[200] hidden overflow-y-auto p-6">
-        <div class="max-w-md mx-auto pb-20">
+        <div class="max-w-md mx-auto pb-20 text-slate-800">
             <div class="flex justify-between items-center mb-10 sticky top-0 bg-white py-4 border-b">
-                <h2 class="text-xl font-bold text-slate-800">Profile Settings</h2>
+                <h2 class="text-xl font-bold">Profile & Card Settings</h2>
                 <button onclick="closeModal('edit-modal')" class="p-2 bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
+            
             <div id="edit-form-fields" class="space-y-5"></div>
             
-            <div class="mt-8 p-4 bg-blue-50 rounded-2xl border border-blue-100">
-                <p class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">Customer Support ID</p>
-                <div class="flex justify-between items-center">
-                    <p id="display-id" class="text-sm font-mono font-bold text-blue-700 tracking-tighter"></p>
-                    <span class="text-[9px] bg-blue-100 text-blue-600 px-2 py-1 rounded font-bold uppercase">RHR SUPPORT</span>
+            <div class="mt-8 p-5 bg-blue-50/50 rounded-2xl border border-blue-100 flex items-center justify-between gap-4">
+                <div class="flex-1">
+                    <p class="text-[10px] font-extrabold text-blue-400 uppercase tracking-widest mb-1">Customer Support ID</p>
+                    <p id="display-id" class="text-base font-mono font-extrabold text-blue-800 tracking-tighter"></p>
                 </div>
+                <a href="https://t.me/yourtelegramusername" target="_blank" class="text-[11px] font-extrabold bg-blue-100 text-blue-700 px-4 py-2.5 rounded-lg uppercase shadow hover:bg-blue-200 transition-colors">
+                    RHR SUPPORT
+                </a>
             </div>
 
-            <button onclick="saveData()" id="save-btn" class="w-full mt-10 py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase tracking-widest shadow-xl">Update & Sync</button>
+            <div class="mt-8 p-5 bg-slate-50 rounded-2xl border border-slate-100">
+                <div class="flex items-center gap-4 justify-between">
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-widest">Background Color</p>
+                        <p class="text-xs text-slate-500 italic">Changes apply only on this device.</p>
+                    </div>
+                    <input type="color" id="inp-bgcolor" oninput="changeBgColor()" value="#f3f4f6">
+                </div>
+                <p id="color-code" class="mt-2 text-[10px] font-mono font-bold text-slate-400">#f3f4f6</p>
+            </div>
+
+            <button onclick="saveData()" id="save-btn" class="w-full mt-10 py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase tracking-widest shadow-xl hover:bg-slate-800 transition-all">Synchronize Cloud Data</button>
         </div>
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9mu41IvW_8bYJubxK4SeNTLj0aDSy6PvODfywQNd2z3xEVH6LSBdFlVsTlDFw9ljBMA/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwkyQi85jW-y0zV7ifOSmiz2WxD7LEgZZlk1vcv4gcIIIIfumhLOcMjgoZZgVZsDp5Ycg/exec";
         const urlParams = new URLSearchParams(window.location.search);
         const PROFILE_ID = urlParams.get('id') || "RHR-BIZ-01";
         let userData = {};
 
         async function init() {
+            // Check for locally saved BG color first
+            const localBgColor = localStorage.getItem(`rhr_bg_color_${PROFILE_ID}`);
+            if (localBgColor) {
+                document.getElementById('body-bg').style.backgroundColor = localBgColor;
+                document.getElementById('inp-bgcolor').value = localBgColor;
+                document.getElementById('color-code').innerText = localBgColor;
+            }
+
             try {
                 const res = await fetch(`${SCRIPT_URL}?id=${PROFILE_ID}`);
                 const result = await res.json();
                 if (result.success) { 
                     userData = result.data; 
                     renderView(); 
-                } else { document.getElementById('main-loader').innerText = "Card Not Found!"; }
+                } else { document.getElementById('main-loader').innerText = "Card ID Not Found!"; }
             } catch (e) { console.error(e); }
         }
 
         function renderView() {
-            // Apply Background Color
-            if(userData.BG_Color) document.getElementById('body-bg').style.backgroundColor = userData.BG_Color;
-
             document.getElementById('view-photo').src = userData.Photo || 'https://via.placeholder.com/150';
             document.getElementById('view-name').innerText = userData.Name;
             document.getElementById('view-title').innerText = userData.Title;
@@ -136,7 +165,9 @@
 
             document.getElementById('main-loader').classList.add('hidden');
             document.getElementById('card-container').classList.remove('hidden');
-            lucide.createIcons();
+            
+            // Re-render icons after data load
+            setTimeout(() => { lucide.createIcons(); }, 100);
         }
 
         function checkPin() {
@@ -153,8 +184,8 @@
             const fields = [
                 {id: 'name', label: 'Full Name', val: userData.Name},
                 {id: 'title', label: 'Designation', val: userData.Title},
+                {id: 'company', label: 'Company', val: userData.Company},
                 {id: 'bio', label: 'About/Bio', val: userData.Bio},
-                {id: 'bgcolor', label: 'BG Color (e.g. #f3f4f6)', val: userData.BG_Color || '#f3f4f6'},
                 {id: 'mobile', label: 'Mobile', val: userData.Mobile},
                 {id: 'email', label: 'Email', val: userData.Email},
                 {id: 'website', label: 'Website', val: userData.Website},
@@ -168,20 +199,20 @@
             document.getElementById('edit-form-fields').innerHTML = fields.map(f => `
                 <div>
                     <label class="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-widest">${f.label}</label>
-                    ${f.id === 'bio' ? `<textarea id="inp-bio" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium text-sm" rows="2">${f.val || ''}</textarea>` : `<input id="inp-${f.id}" value="${f.val || ''}" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium text-sm">`}
+                    ${f.id === 'bio' ? `<textarea id="inp-bio" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium text-slate-700 focus:bg-white focus:ring-1 focus:ring-blue-100 transition-all text-sm" rows="2">${f.val || ''}</textarea>` : `<input id="inp-${f.id}" value="${f.val || ''}" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium text-slate-700 focus:bg-white focus:ring-1 focus:ring-blue-100 transition-all text-sm">`}
                 </div>`).join('');
         }
 
         async function saveData() {
             const btn = document.getElementById('save-btn');
-            btn.innerText = "Syncing Data..."; btn.disabled = true;
+            btn.innerText = "Synchronizing Data..."; btn.disabled = true;
             const data = { 
                 id: PROFILE_ID, 
                 pin: document.getElementById('inp-new-pin').value,
                 name: document.getElementById('inp-name').value, 
                 title: document.getElementById('inp-title').value,
+                company: document.getElementById('inp-company').value, 
                 bio: document.getElementById('inp-bio').value,
-                bgcolor: document.getElementById('inp-bgcolor').value,
                 mobile: document.getElementById('inp-mobile').value,
                 email: document.getElementById('inp-email').value, 
                 website: document.getElementById('inp-website').value,
@@ -194,11 +225,20 @@
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
                 location.reload();
-            } catch (e) { alert("Error saving data!"); btn.disabled = false; btn.innerText = "Update & Sync"; }
+            } catch (e) { alert("Save failed! Check internet."); btn.disabled = false; btn.innerText = "Synchronize Cloud Data"; }
+        }
+
+        // Canva-style BG Color Picker Logic
+        function changeBgColor() {
+            const colorCode = document.getElementById('inp-bgcolor').value;
+            document.getElementById('body-bg').style.backgroundColor = colorCode;
+            document.getElementById('color-code').innerText = colorCode;
+            // Save locally so it persists
+            localStorage.setItem(`rhr_bg_color_${PROFILE_ID}`, colorCode);
         }
 
         function saveVCF() {
-            const vcfData = `BEGIN:VCARD\nVERSION:3.0\nFN:${userData.Name}\nTEL;TYPE=CELL:${userData.Mobile}\nEMAIL:${userData.Email}\nEND:VCARD`;
+            const vcfData = `BEGIN:VCARD\nVERSION:3.0\nFN:${userData.Name}\nORG:${userData.Company}\nTITLE:${userData.Title}\nTEL;TYPE=CELL:${userData.Mobile}\nEMAIL:${userData.Email}\nURL:${userData.Website}\nEND:VCARD`;
             const blob = new Blob([vcfData], { type: 'text/vcard' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a'); a.href = url; a.download = `${userData.Name}.vcf`; a.click();
@@ -206,7 +246,8 @@
 
         function openModal(id) { document.getElementById(id).style.display = (id === 'edit-modal' ? 'block' : 'flex'); }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        window.onload = () => { lucide.createIcons(); init(); };
+        
+        window.onload = () => { init(); };
     </script>
 </body>
 </html>
