@@ -3,267 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Business Card - RHR</title>
+    <title>RHR Digital Business Card</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; transition: background-color 0.5s ease; }
-        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 2.5rem; }
-        .profile-img { width: 110px; height: 110px; object-fit: cover; border: 4px solid white; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
-        .icon-box { min-width: 48px; min-height: 48px; flex: 1; display: flex; align-items: center; justify-content: center; border-radius: 1rem; background: #f8fafc; color: #64748b; border: 1px solid #f1f5f9; transition: all 0.3s; }
-        .icon-box:hover { background: #eff6ff; color: #2563eb; transform: translateY(-2px); }
-        .social-text-link { flex: 1; padding: 1rem; text-align: center; border-radius: 1rem; background: #f8fafc; border: 1px solid #f1f5f9; color: #334155; font-weight: 600; font-size: 0.8rem; transition: all 0.3s; }
-        .social-text-link:hover { background: #eff6ff; color: #2563eb; transform: translateY(-2px); }
+        .glass-card { transition: all 0.4s ease; border-radius: 2.5rem; }
         
-        /* Transition properties for smooth color changes */
-        #header-bg, #save-btn-view, body { transition: background-color 0.3s, color 0.3s; }
+        /* Themes */
+        .theme-classic { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .theme-border { background: #ffffff; border: 2px solid #e2e8f0; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .theme-glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); }
+        .theme-minimal { background: #ffffff; border-radius: 1rem; box-shadow: none; border: 1px solid #f1f5f9; }
+        .theme-bold { background: #ffffff; border-top: 10px solid; }
+
+        .profile-img { width: 110px; height: 110px; object-fit: cover; border: 4px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .theme-btn { padding: 10px; border: 2px solid #f1f5f9; border-radius: 12px; cursor: pointer; text-align: center; font-size: 10px; font-weight: bold; }
+        .theme-btn.active { border-color: #2563eb; background: #eff6ff; color: #2563eb; }
+        .input-style { w-full p-4 bg-slate-50 rounded-xl border-none outline-none text-sm; }
     </style>
 </head>
-<body id="body-bg" class="min-h-screen flex items-center justify-center p-4 bg-[#0100f0]"> <button onclick="openModal('pin-modal')" class="fixed top-6 right-6 p-3 bg-white shadow-lg rounded-full z-50 text-slate-400">
-        <i data-lucide="settings" class="w-5 h-5"></i>
-    </button>
+<body id="body-bg" class="min-h-screen flex items-center justify-center p-4">
 
-    <div id="main-loader" class="text-slate-400 font-medium animate-pulse italic">RHR Smart Card is connecting...</div>
-    
-    <div id="card-container" class="max-w-sm w-full glass-card shadow-2xl overflow-hidden hidden">
-        <div id="header-bg" class="h-28 bg-[#1e293b]"></div> <div class="px-6 pb-8 -mt-14 text-center">
-            <img id="view-photo" src="" alt="Profile" class="profile-img rounded-full mx-auto mb-3 bg-slate-100">
-            <h1 id="view-name" class="text-xl font-bold tracking-tight text-slate-800"></h1>
+    <div id="card-container" class="max-w-sm w-full glass-card shadow-2xl overflow-hidden hidden theme-classic">
+        <div id="header-bg" class="h-28"></div>
+        <div class="px-6 pb-8 -mt-14 text-center">
+            <img id="view-photo" src="" class="profile-img rounded-full mx-auto mb-3 bg-slate-100">
+            <h1 id="view-name" class="text-xl font-bold text-slate-800"></h1>
             <p id="view-title" class="text-blue-600 font-bold text-[10px] uppercase tracking-widest italic"></p>
-            <p id="view-company" class="text-slate-400 text-[10px] font-bold mb-4 uppercase tracking-wider"></p>
-            
-            <div class="mb-6 px-2">
-                <p id="view-bio" class="text-slate-500 text-xs leading-relaxed italic"></p>
-            </div>
+            <p id="view-company" class="text-slate-400 text-[10px] font-bold mt-1 uppercase"></p>
+            <p id="view-bio" class="text-slate-500 text-xs mt-4 italic"></p>
 
-            <button id="save-btn-view" onclick="saveVCF()" class="w-full bg-[#1e293b] text-white py-4 rounded-2xl font-bold text-sm mb-6 flex items-center justify-center gap-2 shadow-lg hover:bg-slate-800 transition-all">
+            <button id="save-btn-view" onclick="saveVCF()" class="w-full text-white py-4 rounded-2xl font-bold text-sm my-6 flex items-center justify-center gap-2 shadow-lg">
                 <i data-lucide="user-plus" class="w-4 h-4"></i> Save Contact
             </button>
 
-            <div class="flex justify-center gap-2 mb-3">
-                <a id="link-mobile" href="#" class="icon-box"><i data-lucide="phone" class="w-5 h-5"></i></a>
-                <a id="link-email" href="#" class="icon-box"><i data-lucide="mail" class="w-5 h-5"></i></a>
-                <a id="link-website" href="#" target="_blank" class="icon-box"><i data-lucide="globe" class="w-5 h-5"></i></a>
-                <div class="icon-box opacity-20 border-dashed"></div>
-                <div class="icon-box opacity-20 border-dashed"></div>
-            </div>
+            <button onclick="openModal('pin-modal')" class="fixed top-6 right-6 p-3 bg-white shadow-lg rounded-full z-50 text-slate-400">
+                <i data-lucide="settings" class="w-5 h-5"></i>
+            </button>
 
-            <div class="flex justify-center gap-2 mb-8">
-                <a id="link-facebook" href="#" target="_blank" class="social-text-link">Facebook</a>
-                <a id="link-linkedin" href="#" target="_blank" class="social-text-link">LinkedIn</a>
-            </div>
-
-            <div class="space-y-3 text-left">
-                <div class="flex gap-4 items-start p-4 bg-slate-50/50 rounded-2xl border border-slate-100 shadow-inner">
-                    <i data-lucide="map-pin" class="w-5 h-5 text-slate-400 mt-1"></i>
+            <div class="space-y-4 text-left">
+                <div class="flex gap-4 items-center p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
+                    <i data-lucide="map-pin" class="w-5 h-5 text-slate-400"></i>
                     <div>
-                        <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Office Address</p>
+                        <p class="text-[9px] font-bold text-slate-400 uppercase">Office Address</p>
                         <p id="view-address" class="text-sm text-slate-700 font-semibold"></p>
                     </div>
                 </div>
-                <div class="flex gap-4 items-start p-4 bg-slate-50/50 rounded-2xl border border-slate-100 shadow-inner">
-                    <i data-lucide="briefcase" class="w-5 h-5 text-slate-400 mt-1"></i>
-                    <div>
-                        <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Services</p>
-                        <p id="view-services" class="text-sm text-slate-700 font-semibold"></p>
-                    </div>
+                <div class="p-4 bg-blue-50 rounded-2xl border border-blue-100 flex items-center justify-between">
+                   <div>
+                        <p class="text-[9px] font-bold text-blue-400 uppercase">Support ID</p>
+                        <p class="text-xs font-mono font-bold text-blue-700" id="support-id-display"></p>
+                   </div>
+                   <a href="https://t.me/rhr_digital_Service" target="_blank" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-[10px] font-bold uppercase shadow-sm">RHR Support</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="pin-modal" class="fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[100] hidden items-center justify-center p-6">
-        <div class="bg-white rounded-[2rem] p-8 max-w-xs w-full text-center shadow-2xl border border-slate-100">
-            <h3 class="text-xl font-bold mb-6 text-slate-800">Admin Access</h3>
-            <input type="password" id="pin-input" class="w-full text-center text-3xl font-bold border-b-2 border-slate-100 focus:border-blue-600 focus:outline-none mb-8" maxlength="4" placeholder="••••">
-            <div class="flex gap-3">
-                <button onclick="closeModal('pin-modal')" class="flex-1 py-3 text-slate-400 font-bold text-xs uppercase">Back</button>
-                <button onclick="checkPin()" class="flex-1 py-3 bg-blue-600 text-white rounded-xl font-bold text-xs uppercase shadow-lg">Login</button>
+    <div id="pin-modal" class="fixed inset-0 bg-slate-900/90 hidden items-center justify-center p-6 z-[100]">
+        <div class="bg-white rounded-3xl p-8 max-w-xs w-full text-center">
+            <h3 class="font-bold mb-6">Enter Admin PIN</h3>
+            <input type="password" id="pin-input" class="w-full text-center text-2xl font-bold border-b-2 mb-8 focus:outline-none" maxlength="4" placeholder="••••">
+            <div class="flex gap-2">
+                <button onclick="closeModal('pin-modal')" class="flex-1 text-slate-400 font-bold">Back</button>
+                <button onclick="checkPin()" class="flex-1 py-3 bg-blue-600 text-white rounded-xl font-bold">Login</button>
             </div>
         </div>
     </div>
 
-    <div id="edit-modal" class="fixed inset-0 bg-white z-[200] hidden overflow-y-auto p-6">
-        <div class="max-w-md mx-auto pb-20 text-slate-800">
-            <div class="flex justify-between items-center mb-10 sticky top-0 bg-white py-4 border-b">
-                <h2 class="text-xl font-bold text-slate-800">Profile & Card Settings</h2>
+    <div id="edit-modal" class="fixed inset-0 bg-white hidden overflow-y-auto p-6 z-[200]">
+        <div class="max-w-md mx-auto pb-10">
+            <div class="flex justify-between items-center mb-8 border-b pb-4">
+                <h2 class="text-xl font-bold">Card Customization</h2>
                 <button onclick="closeModal('edit-modal')" class="p-2 bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-            
-            <div id="edit-form-fields" class="space-y-5"></div>
-            
-            <div class="mt-8 p-6 bg-slate-50 rounded-2xl border border-slate-100 space-y-5">
-                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest border-b pb-2">Appearance (Saves Locally)</p>
-                
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between gap-4">
-                        <label class="text-xs font-semibold text-slate-700">Card Header (Top Section)</label>
-                        <input type="color" id="inp-headercolor" oninput="changeColors()" class="w-10 h-10 border-0 cursor-pointer" value="#1e293b">
-                    </div>
-                    <div class="flex items-center justify-between gap-4">
-                        <label class="text-xs font-semibold text-slate-700">Save Button Color</label>
-                        <input type="color" id="inp-btncolor" oninput="changeColors()" class="w-10 h-10 border-0 cursor-pointer" value="#1e293b">
-                    </div>
-                    <div class="flex items-center justify-between gap-4 border-t pt-4">
-                        <label class="text-xs font-semibold text-slate-700">Main Background Color</label>
-                        <input type="color" id="inp-bgcolor" oninput="changeColors()" class="w-10 h-10 border-0 cursor-pointer" value="#0100f0">
-                    </div>
+
+            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">Select UI Theme</p>
+            <div class="grid grid-cols-3 gap-2 mb-8">
+                <div onclick="setTheme('theme-classic')" id="btn-theme-classic" class="theme-btn">Classic</div>
+                <div onclick="setTheme('theme-border')" id="btn-theme-border" class="theme-btn">Modern</div>
+                <div onclick="setTheme('theme-glass')" id="btn-theme-glass" class="theme-btn">Glass</div>
+                <div onclick="setTheme('theme-minimal')" id="btn-theme-minimal" class="theme-btn">Minimal</div>
+                <div onclick="setTheme('theme-bold')" id="btn-theme-bold" class="theme-btn">Bold</div>
+            </div>
+
+            <div class="space-y-4 mb-8 bg-slate-50 p-6 rounded-2xl">
+                <p class="text-[10px] font-bold text-slate-400 uppercase text-center border-b pb-2 mb-4">Color Palette</p>
+                <div class="flex justify-between items-center">
+                    <label class="text-xs font-bold">Card Header & Buttons</label>
+                    <input type="color" id="inp-headercolor" oninput="liveColor()" class="w-10 h-10 border-none bg-transparent">
+                </div>
+                <div class="flex justify-between items-center">
+                    <label class="text-xs font-bold">Main Background</label>
+                    <input type="color" id="inp-bgcolor" oninput="liveColor()" class="w-10 h-10 border-none bg-transparent">
                 </div>
             </div>
 
-            <div class="mt-8 p-5 bg-blue-50/50 rounded-2xl border border-blue-100 flex items-center justify-between gap-4">
-                <div class="flex-1">
-                    <p class="text-[10px] font-extrabold text-blue-400 uppercase tracking-widest mb-1">Customer Support ID</p>
-                    <p id="display-id" class="text-base font-mono font-extrabold text-blue-800 tracking-tighter"></p>
-                </div>
-                <a id="rhr-support-btn" href="https://t.me/yourtelegramusername" target="_blank" class="text-[11px] font-extrabold bg-blue-100 text-blue-700 px-4 py-2.5 rounded-lg uppercase shadow hover:bg-blue-200 transition-colors">
-                    RHR SUPPORT
-                </a>
-            </div>
-
-            <button onclick="saveData()" id="save-btn" class="w-full mt-10 py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase tracking-widest shadow-xl hover:bg-slate-800 transition-all">Synchronize Cloud Data</button>
+            <button onclick="saveToCloud()" id="sync-btn" class="w-full py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase tracking-widest shadow-xl">Synchronize Cloud Data</button>
         </div>
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9mu41IvW_8bYJubxK4SeNTLj0aDSy6PvODfywQNd2z3xEVH6LSBdFlVsTlDFw9ljBMA/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRhQAKGz4vEEWmAA061cNxjWZX_JWWHSoXY35zZjibammHPBYTpmUaFVpllNVqkz-KPg/exec";
         const urlParams = new URLSearchParams(window.location.search);
         const PROFILE_ID = urlParams.get('id') || "RHR-BIZ-01";
         let userData = {};
+        let currentTheme = "theme-classic";
 
         async function init() {
-            lucide.createIcons();
-            // Critical: Apply local color settings first
-            applyLocalColors();
-            
             try {
                 const res = await fetch(`${SCRIPT_URL}?id=${PROFILE_ID}`);
                 const result = await res.json();
-                if (result.success) { 
-                    userData = result.data; 
-                    renderView(); 
-                } else { document.getElementById('main-loader').innerText = "Card ID Not Found!"; }
-            } catch (e) { console.error(e); }
+                if (result.success) {
+                    userData = result.data;
+                    document.getElementById('support-id-display').innerText = PROFILE_ID;
+                    applyColors(userData.BG_Color, userData.Header_Color, userData.Theme);
+                    renderView();
+                }
+            } catch (e) { console.error("Initialization failed", e); }
+        }
+
+        function applyColors(bg, head, theme) {
+            document.body.style.backgroundColor = bg || "#0100f0";
+            document.getElementById('header-bg').style.backgroundColor = head || "#1e293b";
+            document.getElementById('save-btn-view').style.backgroundColor = head || "#1e293b";
+            
+            const card = document.getElementById('card-container');
+            card.classList.remove('theme-classic', 'theme-border', 'theme-glass', 'theme-minimal', 'theme-bold');
+            card.classList.add(theme || 'theme-classic');
+            
+            if(theme === 'theme-bold') {
+                card.style.borderTopColor = head || "#1e293b";
+            } else {
+                card.style.borderTopColor = "transparent";
+            }
+            
+            currentTheme = theme || 'theme-classic';
+            document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+            const activeBtn = document.getElementById('btn-' + currentTheme);
+            if(activeBtn) activeBtn.classList.add('active');
+        }
+
+        function liveColor() {
+            applyColors(document.getElementById('inp-bgcolor').value, document.getElementById('inp-headercolor').value, currentTheme);
+        }
+
+        function setTheme(t) {
+            currentTheme = t;
+            liveColor();
+        }
+
+        async function saveToCloud() {
+            const btn = document.getElementById('sync-btn');
+            const originalText = btn.innerText;
+            btn.innerText = "Syncing with Cloud...";
+            btn.disabled = true;
+
+            const data = {
+                id: PROFILE_ID,
+                bgColor: document.getElementById('inp-bgcolor').value,
+                headerColor: document.getElementById('inp-headercolor').value,
+                theme: currentTheme,
+                // Existing data preservation
+                name: userData.Name, mobile: userData.Mobile, title: userData.Title,
+                photo: userData.Photo, bio: userData.Bio, address: userData.Address,
+                pin: userData.Admin_PIN, company: userData.Company, services: userData.Services,
+                email: userData.Email, website: userData.Website, facebook: userData.Facebook, linkedin: userData.LinkedIn
+            };
+
+            try {
+                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
+                alert("Cloud Sync Successful! All users will now see this design.");
+                location.reload();
+            } catch (e) {
+                alert("Sync failed. Check your internet.");
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
         }
 
         function renderView() {
-            document.getElementById('view-photo').src = userData.Photo || 'https://via.placeholder.com/150';
             document.getElementById('view-name').innerText = userData.Name;
+            document.getElementById('view-photo').src = userData.Photo || 'https://via.placeholder.com/150';
             document.getElementById('view-title').innerText = userData.Title;
-            document.getElementById('view-company').innerText = userData.Company;
+            document.getElementById('view-company').innerText = userData.Company || "";
             document.getElementById('view-bio').innerText = userData.Bio || "";
             document.getElementById('view-address').innerText = userData.Address;
-            document.getElementById('view-services').innerText = userData.Services;
-
-            document.getElementById('link-mobile').href = `tel:${userData.Mobile}`;
-            document.getElementById('link-email').href = `mailto:${userData.Email}`;
-            document.getElementById('link-website').href = userData.Website;
-            document.getElementById('link-facebook').href = userData.Facebook;
-            document.getElementById('link-linkedin').href = userData.LinkedIn;
-
-            document.getElementById('main-loader').classList.add('hidden');
             document.getElementById('card-container').classList.remove('hidden');
-            
-            setTimeout(() => { lucide.createIcons(); }, 100);
+            lucide.createIcons();
         }
-
-        // --- Color Customization Logic ---
-        function applyLocalColors() {
-            const settings = JSON.parse(localStorage.getItem(`rhr_card_colors_${PROFILE_ID}`)) || {};
-            // BG Color
-            const bgColor = settings.bgColor || "#0100f0";
-            document.getElementById('body-bg').style.backgroundColor = bgColor;
-            document.getElementById('inp-bgcolor').value = bgColor;
-            
-            // Header Color
-            const headerColor = settings.headerColor || "#1e293b";
-            document.getElementById('header-bg').style.backgroundColor = headerColor;
-            document.getElementById('inp-headercolor').value = headerColor;
-            
-            // Button Color
-            const btnColor = settings.btnColor || "#1e293b";
-            document.getElementById('save-btn-view').style.backgroundColor = btnColor;
-            document.getElementById('inp-btncolor').value = btnColor;
-        }
-
-        function changeColors() {
-            const settings = {
-                bgColor: document.getElementById('inp-bgcolor').value,
-                headerColor: document.getElementById('inp-headercolor').value,
-                btnColor: document.getElementById('inp-btncolor').value
-            };
-            
-            // Apply live changes
-            document.getElementById('body-bg').style.backgroundColor = settings.bgColor;
-            document.getElementById('header-bg').style.backgroundColor = settings.headerColor;
-            document.getElementById('save-btn-view').style.backgroundColor = settings.btnColor;
-            
-            // Save locally
-            localStorage.setItem(`rhr_card_colors_${PROFILE_ID}`, JSON.stringify(settings));
-        }
-        // ---------------------------------
 
         function checkPin() {
-            if(document.getElementById('pin-input').value == (userData.Admin_PIN || "1111")) {
-                setupEditForm();
-                document.getElementById('display-id').innerText = PROFILE_ID;
+            const pin = document.getElementById('pin-input').value;
+            if(pin == (userData.Admin_PIN || "1111")) {
                 closeModal('pin-modal');
                 openModal('edit-modal');
-            } else { alert("Incorrect PIN!"); }
-            document.getElementById('pin-input').value = "";
-        }
-
-        function setupEditForm() {
-            const fields = [
-                {id: 'name', label: 'Full Name', val: userData.Name},
-                {id: 'title', label: 'Designation', val: userData.Title},
-                {id: 'company', label: 'Company Name', val: userData.Company},
-                {id: 'bio', label: 'About/Bio', val: userData.Bio},
-                {id: 'mobile', label: 'Mobile Number', val: userData.Mobile},
-                {id: 'email', label: 'Email Address', val: userData.Email},
-                {id: 'website', label: 'Website URL', val: userData.Website},
-                {id: 'facebook', label: 'Facebook URL', val: userData.Facebook},
-                {id: 'linkedin', label: 'LinkedIn URL', val: userData.LinkedIn},
-                {id: 'address', label: 'Office Address', val: userData.Address},
-                {id: 'services', label: 'Expertise/Services', val: userData.Services},
-                {id: 'photo', label: 'Profile Photo URL', val: userData.Photo},
-                {id: 'new-pin', label: 'Admin Access PIN', val: userData.Admin_PIN}
-            ];
-            document.getElementById('edit-form-fields').innerHTML = fields.map(f => `
-                <div>
-                    <label class="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-widest">${f.label}</label>
-                    ${f.id === 'bio' ? `<textarea id="inp-bio" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium text-slate-700 focus:bg-white focus:ring-1 focus:ring-blue-100 transition-all text-sm" rows="2">${f.val || ''}</textarea>` : `<input id="inp-${f.id}" value="${f.val || ''}" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium text-slate-700 focus:bg-white focus:ring-1 focus:ring-blue-100 transition-all text-sm">`}
-                </div>`).join('');
-        }
-
-        async function saveData() {
-            const btn = document.getElementById('save-btn');
-            btn.innerText = "Synchronizing..."; btn.disabled = true;
-            const data = { 
-                id: PROFILE_ID, 
-                pin: document.getElementById('inp-new-pin').value,
-                name: document.getElementById('inp-name').value, 
-                title: document.getElementById('inp-title').value,
-                company: document.getElementById('inp-company').value, 
-                bio: document.getElementById('inp-bio').value,
-                mobile: document.getElementById('inp-mobile').value,
-                email: document.getElementById('inp-email').value, 
-                website: document.getElementById('inp-website').value,
-                facebook: document.getElementById('inp-facebook').value, 
-                linkedin: document.getElementById('inp-linkedin').value,
-                address: document.getElementById('inp-address').value, 
-                services: document.getElementById('inp-services').value,
-                photo: document.getElementById('inp-photo').value
-            };
-            try {
-                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
-                location.reload();
-            } catch (e) { alert("Data sync failed! Please try again."); btn.disabled = false; btn.innerText = "Synchronize Cloud Data"; }
+                document.getElementById('inp-bgcolor').value = userData.BG_Color || "#0100f0";
+                document.getElementById('inp-headercolor').value = userData.Header_Color || "#1e293b";
+            } else { alert("Incorrect Admin PIN"); }
         }
 
         function saveVCF() {
-            const vcfData = `BEGIN:VCARD\nVERSION:3.0\nFN:${userData.Name}\nORG:${userData.Company}\nTITLE:${userData.Title}\nTEL;TYPE=CELL:${userData.Mobile}\nEMAIL:${userData.Email}\nEND:VCARD`;
+            const vcfData = `BEGIN:VCARD\nVERSION:3.0\nFN:${userData.Name}\nTEL:${userData.Mobile}\nEMAIL:${userData.Email}\nEND:VCARD`;
             const blob = new Blob([vcfData], { type: 'text/vcard' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a'); a.href = url; a.download = `${userData.Name}.vcf`; a.click();
@@ -271,8 +214,7 @@
 
         function openModal(id) { document.getElementById(id).style.display = (id === 'edit-modal' ? 'block' : 'flex'); }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        
-        window.onload = () => { init(); };
+        window.onload = init;
     </script>
 </body>
 </html>
