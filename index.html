@@ -10,9 +10,11 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
         .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 2.5rem; }
-        .profile-img { width: 120px; height: 120px; object-fit: cover; border: 4px solid white; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
-        .icon-box { min-width: 48px; min-height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 1rem; background: #f8fafc; color: #64748b; transition: all 0.3s; border: 1px solid #f1f5f9; }
+        .profile-img { width: 110px; height: 110px; object-fit: cover; border: 4px solid white; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
+        .icon-box { min-width: 48px; min-height: 48px; flex: 1; display: flex; align-items: center; justify-content: center; border-radius: 1rem; background: #f8fafc; color: #64748b; border: 1px solid #f1f5f9; transition: all 0.3s; }
         .icon-box:hover { background: #eff6ff; color: #2563eb; transform: translateY(-2px); }
+        .social-text-link { flex: 1; padding: 1rem; text-align: center; border-radius: 1rem; background: #f8fafc; border: 1px solid #f1f5f9; color: #334155; font-weight: 600; font-size: 0.8rem; transition: all 0.3s; }
+        .social-text-link:hover { background: #eff6ff; color: #2563eb; transform: translateY(-2px); }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
@@ -21,30 +23,39 @@
         <i data-lucide="settings" class="w-5 h-5"></i>
     </button>
 
-    <div id="main-loader" class="text-slate-400 font-medium animate-pulse">Fetching Profile Data...</div>
+    <div id="main-loader" class="text-slate-400 font-medium animate-pulse italic">Syncing with RHR Cloud...</div>
     
     <div id="card-container" class="max-w-sm w-full glass-card shadow-2xl overflow-hidden hidden">
-        <div class="h-32 bg-slate-900"></div>
+        <div class="h-28 bg-slate-900"></div>
         
-        <div class="px-6 pb-8 -mt-16 text-center">
-            <img id="view-photo" src="" alt="Profile" class="profile-img rounded-full mx-auto mb-4 bg-slate-100">
-            <h1 id="view-name" class="text-2xl font-bold text-slate-800 tracking-tight"></h1>
-            <p id="view-title" class="text-blue-600 font-bold text-xs mb-1 uppercase tracking-widest italic"></p>
-            <p id="view-company" class="text-slate-400 text-[10px] font-bold mb-6 uppercase"></p>
+        <div class="px-6 pb-8 -mt-14 text-center">
+            <img id="view-photo" src="" alt="Profile" class="profile-img rounded-full mx-auto mb-3 bg-slate-100">
+            <h1 id="view-name" class="text-xl font-bold text-slate-800 tracking-tight"></h1>
+            <p id="view-title" class="text-blue-600 font-bold text-[10px] uppercase tracking-widest italic"></p>
+            <p id="view-company" class="text-slate-400 text-[10px] font-bold mb-4 uppercase tracking-wider"></p>
+            
+            <div class="mb-6 px-2">
+                <p id="view-bio" class="text-slate-500 text-xs leading-relaxed italic"></p>
+            </div>
 
-            <button onclick="saveVCF()" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold text-sm mb-8 flex items-center justify-center gap-2 shadow-lg hover:bg-slate-800 transition-all">
+            <button onclick="saveVCF()" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold text-sm mb-6 flex items-center justify-center gap-2 shadow-lg hover:bg-slate-800 transition-all">
                 <i data-lucide="user-plus" class="w-4 h-4"></i> Save Contact
             </button>
 
-            <div class="flex justify-center gap-2 mb-8">
+            <div class="flex justify-center gap-2 mb-3">
                 <a id="link-mobile" href="#" class="icon-box"><i data-lucide="phone" class="w-5 h-5"></i></a>
                 <a id="link-email" href="#" class="icon-box"><i data-lucide="mail" class="w-5 h-5"></i></a>
                 <a id="link-website" href="#" target="_blank" class="icon-box"><i data-lucide="globe" class="w-5 h-5"></i></a>
-                <a id="link-facebook" href="#" target="_blank" class="icon-box"><i data-lucide="facebook" class="w-5 h-5"></i></a>
-                <a id="link-linkedin" href="#" target="_blank" class="icon-box"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                <div class="icon-box opacity-20 border-dashed"></div>
+                <div class="icon-box opacity-20 border-dashed"></div>
             </div>
 
-            <div class="space-y-4 text-left">
+            <div class="flex justify-center gap-2 mb-8">
+                <a id="link-facebook" href="#" target="_blank" class="social-text-link">Facebook Profile</a>
+                <a id="link-linkedin" href="#" target="_blank" class="social-text-link">LinkedIn Profile</a>
+            </div>
+
+            <div class="space-y-3 text-left">
                 <div class="flex gap-4 items-start p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
                     <i data-lucide="map-pin" class="w-5 h-5 text-slate-400 mt-1"></i>
                     <div>
@@ -65,11 +76,11 @@
 
     <div id="pin-modal" class="fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[100] hidden items-center justify-center p-6">
         <div class="bg-white rounded-[2rem] p-8 max-w-xs w-full text-center shadow-2xl">
-            <h3 class="text-xl font-bold mb-6 text-slate-800">Admin Login</h3>
+            <h3 class="text-xl font-bold mb-6 text-slate-800">Admin Access</h3>
             <input type="password" id="pin-input" class="w-full text-center text-3xl font-bold border-b-2 border-slate-100 focus:border-blue-600 focus:outline-none mb-8" maxlength="4" placeholder="••••">
             <div class="flex gap-3">
-                <button onclick="closeModal('pin-modal')" class="flex-1 py-3 text-slate-400 font-bold text-xs uppercase">Cancel</button>
-                <button onclick="checkPin()" class="flex-1 py-3 bg-blue-600 text-white rounded-xl font-bold text-xs uppercase">Login</button>
+                <button onclick="closeModal('pin-modal')" class="flex-1 py-3 text-slate-400 font-bold text-xs uppercase">Back</button>
+                <button onclick="checkPin()" class="flex-1 py-3 bg-blue-600 text-white rounded-xl font-bold text-xs uppercase shadow-lg">Login</button>
             </div>
         </div>
     </div>
@@ -77,16 +88,17 @@
     <div id="edit-modal" class="fixed inset-0 bg-white z-[200] hidden overflow-y-auto p-6">
         <div class="max-w-md mx-auto pb-20">
             <div class="flex justify-between items-center mb-10 sticky top-0 bg-white py-4 border-b">
-                <h2 class="text-xl font-bold">Update Profile</h2>
+                <h2 class="text-xl font-bold text-slate-800">Update Profile</h2>
                 <button onclick="closeModal('edit-modal')" class="p-2 bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div id="edit-form-fields" class="space-y-5"></div>
-            <button onclick="saveData()" id="save-btn" class="w-full mt-10 py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase tracking-widest shadow-xl">Update Now</button>
+            <button onclick="saveData()" id="save-btn" class="w-full mt-10 py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase tracking-widest shadow-xl">Update Cloud Data</button>
         </div>
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJxkZBU4D31lmzUm8hRwRK6NsPk0DjXCuijtyrD4nHoYz0RKlemPSe9TWFZ6fgSU4X/exec";
+        // Updated Script URL
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwkyQi85jW-y0zV7ifOSmiz2WxD7LEgZZlk1vcv4gcIIIIfumhLOcMjgoZZgVZsDp5Ycg/exec";
         const urlParams = new URLSearchParams(window.location.search);
         const PROFILE_ID = urlParams.get('id') || "RHR-BIZ-01";
         let userData = {};
@@ -107,6 +119,7 @@
             document.getElementById('view-name').innerText = userData.Name;
             document.getElementById('view-title').innerText = userData.Title;
             document.getElementById('view-company').innerText = userData.Company;
+            document.getElementById('view-bio').innerText = userData.Bio || "Add your company bio here...";
             document.getElementById('view-address').innerText = userData.Address;
             document.getElementById('view-services').innerText = userData.Services;
 
@@ -119,8 +132,18 @@
             document.getElementById('main-loader').classList.add('hidden');
             document.getElementById('card-container').classList.remove('hidden');
             
-            // CRITICAL: Force re-render icons after DOM is ready
+            // Force re-render icons
             lucide.createIcons();
+        }
+
+        function saveVCF() {
+            const vcfData = `BEGIN:VCARD\nVERSION:3.0\nFN:${userData.Name}\nORG:${userData.Company}\nTITLE:${userData.Title}\nTEL;TYPE=CELL:${userData.Mobile}\nEMAIL:${userData.Email}\nURL:${userData.Website}\nEND:VCARD`;
+            const blob = new Blob([vcfData], { type: 'text/vcard' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${userData.Name}.vcf`;
+            a.click();
         }
 
         function checkPin() {
@@ -128,7 +151,7 @@
                 setupEditForm();
                 closeModal('pin-modal');
                 openModal('edit-modal');
-            } else { alert("Wrong PIN!"); }
+            } else { alert("Incorrect PIN!"); }
             document.getElementById('pin-input').value = "";
         }
 
@@ -137,28 +160,34 @@
                 {id: 'name', label: 'Full Name', val: userData.Name},
                 {id: 'title', label: 'Designation', val: userData.Title},
                 {id: 'company', label: 'Company', val: userData.Company},
+                {id: 'bio', label: 'Company Bio', val: userData.Bio},
                 {id: 'mobile', label: 'Mobile', val: userData.Mobile},
                 {id: 'email', label: 'Email', val: userData.Email},
                 {id: 'website', label: 'Website', val: userData.Website},
                 {id: 'facebook', label: 'Facebook URL', val: userData.Facebook},
                 {id: 'linkedin', label: 'LinkedIn URL', val: userData.LinkedIn},
-                {id: 'address', label: 'Office Address', val: userData.Address},
-                {id: 'services', label: 'Expertise/Services', val: userData.Services},
-                {id: 'photo', label: 'Photo Link (Direct)', val: userData.Photo},
-                {id: 'new-pin', label: 'Change Admin PIN', val: userData.Admin_PIN}
+                {id: 'address', label: 'Address', val: userData.Address},
+                {id: 'services', label: 'Services', val: userData.Services},
+                {id: 'photo', label: 'Photo URL', val: userData.Photo},
+                {id: 'new-pin', label: 'Admin PIN', val: userData.Admin_PIN}
             ];
-            document.getElementById('edit-form-fields').innerHTML = fields.map(f => `<div><label class="text-[10px] font-bold text-slate-400 block mb-1 uppercase">${f.label}</label><input id="inp-${f.id}" value="${f.val || ''}" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium"></div>`).join('');
+            document.getElementById('edit-form-fields').innerHTML = fields.map(f => `
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-widest">${f.label}</label>
+                    ${f.id === 'bio' ? `<textarea id="inp-bio" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium text-sm" rows="3">${f.val || ''}</textarea>` : `<input id="inp-${f.id}" value="${f.val || ''}" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium text-sm">`}
+                </div>`).join('');
         }
 
         async function saveData() {
             const btn = document.getElementById('save-btn');
-            btn.innerText = "Syncing Data..."; btn.disabled = true;
+            btn.innerText = "Saving Data..."; btn.disabled = true;
             const data = { 
                 id: PROFILE_ID, 
                 pin: document.getElementById('inp-new-pin').value,
                 name: document.getElementById('inp-name').value, 
                 title: document.getElementById('inp-title').value,
                 company: document.getElementById('inp-company').value, 
+                bio: document.getElementById('inp-bio').value,
                 mobile: document.getElementById('inp-mobile').value,
                 email: document.getElementById('inp-email').value, 
                 website: document.getElementById('inp-website').value,
@@ -171,13 +200,12 @@
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
                 location.reload();
-            } catch (e) { alert("Error saving data."); btn.disabled = false; btn.innerText = "Update Now"; }
+            } catch (e) { alert("Update failed!"); btn.disabled = false; btn.innerText = "Update Cloud Data"; }
         }
 
         function openModal(id) { document.getElementById(id).style.display = (id === 'edit-modal' ? 'block' : 'flex'); }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
         
-        // Initial icon load
         window.onload = () => { lucide.createIcons(); init(); };
     </script>
 </body>
