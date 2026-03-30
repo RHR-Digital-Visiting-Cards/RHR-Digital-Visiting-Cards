@@ -11,7 +11,7 @@
         body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
         .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 2.5rem; }
         .profile-img { width: 120px; height: 120px; object-fit: cover; border: 4px solid white; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
-        .action-btn { transition: all 0.2s ease; shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .action-btn { transition: all 0.2s ease; }
         .action-btn:active { transform: scale(0.95); }
     </style>
 </head>
@@ -21,7 +21,7 @@
         <i data-lucide="settings" class="w-5 h-5"></i>
     </button>
 
-    <div id="main-loader" class="text-slate-400 font-medium">Loading Business Card...</div>
+    <div id="main-loader" class="text-slate-400 font-medium italic">Syncing Your Digital Profile...</div>
     
     <div id="card-container" class="max-w-sm w-full glass-card shadow-2xl overflow-hidden hidden">
         <div class="h-32 bg-gradient-to-r from-slate-800 to-slate-900"></div>
@@ -29,41 +29,44 @@
         <div class="px-6 pb-8 -mt-16 text-center">
             <img id="view-photo" src="" alt="Profile" class="profile-img rounded-full mx-auto mb-4 bg-slate-200">
             <h1 id="view-name" class="text-2xl font-bold text-slate-800 tracking-tight">Name</h1>
-            <p id="view-title" class="text-blue-600 font-semibold text-sm mb-1 uppercase tracking-wider">Designation</p>
+            <p id="view-title" class="text-blue-600 font-semibold text-sm mb-1 uppercase tracking-wider italic">Designation</p>
             <p id="view-company" class="text-slate-400 text-xs font-medium mb-6">Company Name</p>
 
-            <button onclick="saveVCF()" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold text-sm mb-8 flex items-center justify-center gap-2 action-btn">
+            <button onclick="saveVCF()" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold text-sm mb-8 flex items-center justify-center gap-2 action-btn shadow-lg">
                 <i data-lucide="user-plus" class="w-4 h-4"></i> Save Contact
             </button>
 
-            <div class="grid grid-cols-4 gap-4 mb-8">
-                <a id="link-mobile" href="#" class="p-4 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-colors">
-                    <i data-lucide="phone" class="w-6 h-6"></i>
+            <div class="grid grid-cols-5 gap-2 mb-8">
+                <a id="link-mobile" href="#" class="p-3 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all">
+                    <i data-lucide="phone" class="w-5 h-5"></i>
                 </a>
-                <a id="link-email" href="#" class="p-4 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-600 hover:bg-red-50 hover:text-red-600 transition-colors">
-                    <i data-lucide="mail" class="w-6 h-6"></i>
+                <a id="link-email" href="#" class="p-3 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-600 hover:bg-red-50 hover:text-red-600 transition-all">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
                 </a>
-                <a id="link-website" href="#" target="_blank" class="p-4 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-600 hover:bg-green-50 hover:text-green-600 transition-colors">
-                    <i data-lucide="globe" class="w-6 h-6"></i>
+                <a id="link-website" href="#" target="_blank" class="p-3 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-600 hover:bg-green-50 hover:text-green-600 transition-all">
+                    <i data-lucide="globe" class="w-5 h-5"></i>
                 </a>
-                <a id="link-linkedin" href="#" target="_blank" class="p-4 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-600 hover:bg-blue-100 hover:text-blue-700 transition-colors">
-                    <i data-lucide="linkedin" class="w-6 h-6"></i>
+                <a id="link-facebook" href="#" target="_blank" class="p-3 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-600 hover:bg-blue-100 hover:text-blue-700 transition-all">
+                    <i data-lucide="facebook" class="w-5 h-5"></i>
+                </a>
+                <a id="link-linkedin" href="#" target="_blank" class="p-3 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-600 hover:bg-blue-200 hover:text-blue-800 transition-all">
+                    <i data-lucide="linkedin" class="w-5 h-5"></i>
                 </a>
             </div>
 
             <div class="space-y-4 text-left">
-                <div class="flex gap-4 items-start p-4 bg-slate-50/50 rounded-2xl">
+                <div class="flex gap-4 items-start p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
                     <i data-lucide="map-pin" class="w-5 h-5 text-slate-400 mt-1"></i>
                     <div>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Office Address</p>
-                        <p id="view-address" class="text-sm text-slate-700 font-medium"></p>
+                        <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Office Address</p>
+                        <p id="view-address" class="text-sm text-slate-700 font-semibold"></p>
                     </div>
                 </div>
-                <div class="flex gap-4 items-start p-4 bg-slate-50/50 rounded-2xl">
-                    <i data-lucide="briefcase" class="w-5 h-5 text-slate-400 mt-1"></i>
+                <div class="flex gap-4 items-start p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
+                    <i data-lucide="sparkles" class="w-5 h-5 text-slate-400 mt-1"></i>
                     <div>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Expertise & Services</p>
-                        <p id="view-services" class="text-sm text-slate-700 font-medium"></p>
+                        <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Expertise & Services</p>
+                        <p id="view-services" class="text-sm text-slate-700 font-semibold"></p>
                     </div>
                 </div>
             </div>
@@ -72,10 +75,10 @@
 
     <div id="pin-modal" class="fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[100] hidden items-center justify-center p-6">
         <div class="bg-white rounded-[2rem] p-8 max-w-xs w-full text-center shadow-2xl">
-            <h3 class="text-xl font-bold mb-6 text-slate-800">Admin Access</h3>
+            <h3 class="text-xl font-bold mb-6 text-slate-800">Verify Identity</h3>
             <input type="password" id="pin-input" class="w-full text-center text-3xl font-bold border-b-2 border-slate-100 focus:border-blue-600 focus:outline-none mb-8" maxlength="4" placeholder="••••">
             <div class="flex gap-3">
-                <button onclick="closeModal('pin-modal')" class="flex-1 py-3 text-slate-400 font-bold text-xs uppercase">Cancel</button>
+                <button onclick="closeModal('pin-modal')" class="flex-1 py-3 text-slate-400 font-bold text-xs uppercase">Back</button>
                 <button onclick="checkPin()" class="flex-1 py-3 bg-blue-600 text-white rounded-xl font-bold text-xs uppercase shadow-lg">Verify</button>
             </div>
         </div>
@@ -84,22 +87,22 @@
     <div id="edit-modal" class="fixed inset-0 bg-white z-[200] hidden overflow-y-auto p-6">
         <div class="max-w-md mx-auto pb-20">
             <div class="flex justify-between items-center mb-10 sticky top-0 bg-white py-4 border-b">
-                <h2 class="text-xl font-bold">Edit Profile</h2>
+                <h2 class="text-xl font-bold">Manage Profile</h2>
                 <button onclick="closeModal('edit-modal')" class="p-2 bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div id="edit-form-fields" class="space-y-5"></div>
             <div class="mt-10 p-6 bg-slate-50 rounded-2xl">
-                <label class="text-[10px] font-bold text-blue-600 block mb-2 uppercase">Security PIN</label>
+                <label class="text-[10px] font-bold text-blue-600 block mb-2 uppercase tracking-tighter">New Security PIN</label>
                 <input id="inp-new-pin" type="password" maxlength="4" class="w-full p-4 rounded-xl border border-slate-200 text-center font-bold text-xl">
             </div>
-            <button onclick="saveData()" id="save-btn" class="w-full mt-8 py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase tracking-widest shadow-xl">Update Card</button>
+            <button onclick="saveData()" id="save-btn" class="w-full mt-8 py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase tracking-widest shadow-xl">Save Changes</button>
         </div>
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbygjkP7yasUadJ3c7q4Vs5d2GYZSOV_RuVImjhATvEmuq4571gwkSFoQVeaO33LXbUqbw/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJxkZBU4D31lmzUm8hRwRK6NsPk0DjXCuijtyrD4nHoYz0RKlemPSe9TWFZ6fgSU4X/exec";
         const urlParams = new URLSearchParams(window.location.search);
-        const PROFILE_ID = urlParams.get('id') || "BIZ-001";
+        const PROFILE_ID = urlParams.get('id') || "RHR-BIZ-01";
         let userData = {};
 
         async function init() {
@@ -109,7 +112,7 @@
                 if (result.success) { 
                     userData = result.data; 
                     renderView(); 
-                } else { document.getElementById('main-loader').innerText = "Card Not Found"; }
+                } else { document.getElementById('main-loader').innerText = "Oops! Profile Not Found."; }
             } catch (e) { console.error(e); }
         }
 
@@ -124,6 +127,7 @@
             document.getElementById('link-mobile').href = `tel:${userData.Mobile}`;
             document.getElementById('link-email').href = `mailto:${userData.Email}`;
             document.getElementById('link-website').href = userData.Website;
+            document.getElementById('link-facebook').href = userData.Facebook;
             document.getElementById('link-linkedin').href = userData.LinkedIn;
 
             document.getElementById('main-loader').classList.add('hidden');
@@ -146,7 +150,7 @@
                 setupEditForm();
                 closeModal('pin-modal');
                 openModal('edit-modal');
-            } else { alert("Wrong PIN!"); }
+            } else { alert("Incorrect Security PIN!"); }
             document.getElementById('pin-input').value = "";
         }
 
@@ -158,14 +162,15 @@
                 {id: 'mobile', label: 'Mobile Number', val: userData.Mobile},
                 {id: 'email', label: 'Email Address', val: userData.Email},
                 {id: 'website', label: 'Website URL', val: userData.Website},
+                {id: 'facebook', label: 'Facebook URL', val: userData.Facebook},
                 {id: 'linkedin', label: 'LinkedIn URL', val: userData.LinkedIn},
                 {id: 'address', label: 'Office Address', val: userData.Address},
                 {id: 'services', label: 'Expertise/Services', val: userData.Services},
-                {id: 'photo', label: 'Photo URL (Direct Link)', val: userData.Photo}
+                {id: 'photo', label: 'Profile Photo URL', val: userData.Photo}
             ];
             let html = "";
             fields.forEach(f => {
-                html += `<div><label class="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-widest">${f.label}</label><input id="inp-${f.id}" value="${f.val || ''}" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium text-slate-700"></div>`;
+                html += `<div><label class="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-widest">${f.label}</label><input id="inp-${f.id}" value="${f.val || ''}" class="w-full p-4 bg-slate-50 rounded-xl border border-slate-100 outline-none font-medium text-slate-700 focus:bg-white focus:ring-1 focus:ring-blue-200 transition-all"></div>`;
             });
             document.getElementById('edit-form-fields').innerHTML = html;
             document.getElementById('inp-new-pin').value = userData.Admin_PIN || "1234";
@@ -173,19 +178,20 @@
 
         async function saveData() {
             const btn = document.getElementById('save-btn');
-            btn.innerText = "Saving..."; btn.disabled = true;
+            btn.innerText = "Synchronizing Data..."; btn.disabled = true;
             const data = { 
                 id: PROFILE_ID, pin: document.getElementById('inp-new-pin').value,
                 name: document.getElementById('inp-name').value, title: document.getElementById('inp-title').value,
                 company: document.getElementById('inp-company').value, mobile: document.getElementById('inp-mobile').value,
                 email: document.getElementById('inp-email').value, website: document.getElementById('inp-website').value,
-                linkedin: document.getElementById('inp-linkedin').value, address: document.getElementById('inp-address').value,
-                services: document.getElementById('inp-services').value, photo: document.getElementById('inp-photo').value
+                facebook: document.getElementById('inp-facebook').value, linkedin: document.getElementById('inp-linkedin').value,
+                address: document.getElementById('inp-address').value, services: document.getElementById('inp-services').value,
+                photo: document.getElementById('inp-photo').value
             };
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
                 location.reload();
-            } catch (e) { alert("Save failed!"); btn.disabled = false; btn.innerText = "Update Card"; }
+            } catch (e) { alert("Save failed! Please check connection."); btn.disabled = false; btn.innerText = "Save Changes"; }
         }
 
         function openModal(id) { document.getElementById(id).style.display = (id === 'edit-modal' ? 'block' : 'flex'); }
